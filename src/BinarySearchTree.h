@@ -23,6 +23,7 @@ void destroyDictionary(Dictionary *dictionary);
 /* Dictionary Operations */
 
 int insertWordDictionary(Dictionary *dictionary, char *word, char *definition);
+int insertDefinitionDictionary(Dictionary *dictionary, char *word, char *definition);
 int removeWordDictionary(Dictionary *dictionary, char *word);
 int removeDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int definitionIndex);
 Definitions *searchWordDictionary(Dictionary *dictionary, char *word);
