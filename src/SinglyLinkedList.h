@@ -18,6 +18,8 @@ void destroyDefinitions(Definitions *definitions);
 
 /* Definitions Operations */
 
-
+int pushDefinitionDefinitions(Definitions *definitions, char *definition);
+int removeDefinitionDefinitions(Definitions *definitions, unsigned int definitionIndex);
+Definition *getDefinitionDefinitions(Definitions *definitions, unsigned int definitionIndex);
 
 #endif
