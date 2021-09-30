@@ -19,6 +19,6 @@ void destroyDefinition(Definition *definition);
 
 /* Definition Operations */
 
-
+int growDefinition(Definition *defintion);
 
 #endif

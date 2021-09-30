@@ -142,16 +142,13 @@ Dictionary *removeWordDictionary(Dictionary *dictionary, char *word)
     return dictionary;
 }
 
-int removeDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int definitionIndex)
+void removeDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int definitionIndex)
 {
     Dictionary *node = searchNodeDictionary(dictionary, word);
     if (!node)
-        return 0;
+        return;
 
-    if (!removeDefinitionDefinitions(node->definitions, definitionIndex, 0))
-        return 0;
-
-    return 1;
+    node->definitions = removeDefinitionDefinitions(node->definitions, definitionIndex, 0);
 }
 
 Definitions *searchWordDictionary(Dictionary *dictionary, char *word)
