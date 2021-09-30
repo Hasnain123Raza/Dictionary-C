@@ -100,7 +100,7 @@ int insertDefinitionDictionary(Dictionary *dictionary, char *word, char *definit
     return 1;
 }
 
-static Dictionary *removeNodeDictionary(Dictionary *dictionary, char *word, int *didRemove)
+Dictionary *removeWordDictionary(Dictionary *dictionary, char *word)
 {
     if (dictionary == NULL)
         return dictionary;
@@ -108,9 +108,9 @@ static Dictionary *removeNodeDictionary(Dictionary *dictionary, char *word, int 
     int comparisonResult = strcmp(word, dictionary->word);
 
     if (comparisonResult < 0)
-        dictionary->left = removeNodeDictionary(dictionary->left, word, didRemove);
+        dictionary->left = removeWordDictionary(dictionary->left, word);
     else if (comparisonResult > 0)
-        dictionary->right = removeNodeDictionary(dictionary->right, word, didRemove);
+        dictionary->right = removeWordDictionary(dictionary->right, word);
     else
     {
         if (dictionary->left && dictionary->right)
@@ -124,33 +124,22 @@ static Dictionary *removeNodeDictionary(Dictionary *dictionary, char *word, int 
             dictionary->definitions = maximumValueNode->definitions;
             maximumValueNode->definitions = temporary;
 
-            dictionary->left = removeNodeDictionary(dictionary->left, maximumValueNode->word, didRemove);
+            dictionary->left = removeWordDictionary(dictionary->left, maximumValueNode->word);
         }
         else if (dictionary->left || dictionary->right)
         {
             Dictionary *childNode = dictionary->left ? dictionary->left : dictionary->right;
             destroyDictionary(dictionary);
-            *didRemove = 1;
             return childNode;
         }
         else
         {
             destroyDictionary(dictionary);
-            *didRemove = 1;
             return NULL;
         }
     }
 
     return dictionary;
-}
-
-int removeWordDictionary(Dictionary *dictionary, char *word)
-{
-    int didRemove = 0;
-
-    dictionary = removeNodeDictionary(dictionary, word, &didRemove);
-
-    return didRemove;
 }
 
 int removeDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int definitionIndex)
@@ -159,7 +148,7 @@ int removeDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int 
     if (!node)
         return 0;
 
-    if (!removeDefinitionDefinitions(node->definitions, definitionIndex))
+    if (!removeDefinitionDefinitions(node->definitions, definitionIndex, 0))
         return 0;
 
     return 1;
@@ -180,5 +169,5 @@ Definition *searchDefinitionDictionary(Dictionary *dictionary, char *word, unsig
     if (!node)
         return NULL;
 
-    return getDefinitionDefinitions(dictionary->definitions, definitionIndex);
+    return getDefinitionDefinitions(dictionary->definitions, definitionIndex, 0);
 }
