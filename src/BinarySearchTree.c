@@ -33,7 +33,7 @@ void destroyDictionary(Dictionary *dictionary)
     if (dictionary->right)
         destroyDictionary(dictionary->right);
     
-    destroySinglyLinkedList(dictionary->definitions);
+    destroyDefinitions(dictionary->definitions);
     free(dictionary);
 }
 
@@ -47,9 +47,9 @@ static Dictionary *searchNodeDictionary(Dictionary *dictionary, char *word)
     int comparisonResult = strcmp(word, dictionary->word);
 
     if (comparisonResult < 0)
-        searchWordNodeDictionary(dictionary->left, word);
+        searchNodeDictionary(dictionary->left, word);
     else if (comparisonResult > 0)
-        searchWordNodeDictionary(dictionary->right, word);
+        searchNodeDictionary(dictionary->right, word);
     else
         return dictionary;
 }

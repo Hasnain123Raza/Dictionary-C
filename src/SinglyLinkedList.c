@@ -8,13 +8,13 @@ Definitions *createDefinitions(char *definition)
     if (!definitions)
         return NULL;
     
-    Definition *definition = createDefinition(definition);
-    if (!definition)
+    Definition *newDefinition = createDefinition(definition);
+    if (!newDefinition)
     {
         free(definitions);
         return NULL;
     }
-    definitions->definition = definition;
+    definitions->definition = newDefinition;
 
     definitions->next = NULL;
 
@@ -38,7 +38,7 @@ int pushDefinitionDefinitions(Definitions *definitions, char *definition)
         return pushDefinitionDefinitions(definitions->next, definition);
     else
     {
-        Definition *newDefinitions = createDefinitions(definition);
+        Definitions *newDefinitions = createDefinitions(definition);
         if (!newDefinitions)
             return 0;
         
