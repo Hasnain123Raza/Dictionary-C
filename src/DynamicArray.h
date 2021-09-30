@@ -1,6 +1,8 @@
 #ifndef DYNAMICARRAY_H
 #define DYNAMICARRAY_H
 
+#define INITIAL_DEFINITION_CAPACITY 64
+
 typedef struct {
     unsigned int capacity;
     unsigned int length;
@@ -12,10 +14,10 @@ typedef DynamicArray Definition;
 
 /* Constructor and Destructor */
 
-DynamicArray *createDynamicArray(unsigned int initialCapacity);
-void destroyDynamicArray(DynamicArray *dynamicArray);
+Definition *createDefinition(char *definition);
+void destroyDefinition(Definition *definition);
 
-/* DynamicArray Operations */
+/* Definition Operations */
 
 
 

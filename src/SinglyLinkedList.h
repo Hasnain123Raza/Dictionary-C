@@ -3,8 +3,10 @@
 
 #include "DynamicArray.h"
 
+#include <stdlib.h>
+
 typedef struct SinglyLinkedListNode {
-    DynamicArray *definition;
+    Definition *definition;
 
     struct SinglyLinkedListNode *next;
 } SinglyLinkedListNode;
