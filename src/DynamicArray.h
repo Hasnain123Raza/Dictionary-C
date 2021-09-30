@@ -8,4 +8,15 @@ typedef struct {
     char *value;
 } DynamicArray;
 
+typedef DynamicArray Definition;
+
+/* Constructor and Destructor */
+
+DynamicArray *createDynamicArray(unsigned int initialCapacity);
+void destroyDynamicArray(DynamicArray *dynamicArray);
+
+/* DynamicArray Operations */
+
+
+
 #endif

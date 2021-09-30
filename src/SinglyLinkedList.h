@@ -9,4 +9,15 @@ typedef struct SinglyLinkedListNode {
     struct SinglyLinkedListNode *next;
 } SinglyLinkedListNode;
 
+typedef SinglyLinkedListNode Definitions;
+
+/* Constructor and Destructor */
+
+SinglyLinkedListNode *createSinglyLinkedList(char *definition);
+void destroySinglyLinkedList(SinglyLinkedListNode *singlyLinkedList);
+
+/* SinglyLinkedList Operations */
+
+
+
 #endif
