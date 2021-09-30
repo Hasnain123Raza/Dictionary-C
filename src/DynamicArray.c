@@ -1,0 +1,63 @@
+#include "SinglyLinkedList.h"
+
+/* Constructor and Destructor */
+
+Definition *createDefinition(char *definition)
+{
+    Definition *newDefinition = malloc(sizeof(Definition));
+    if (!newDefinition)
+        return NULL;
+    
+    newDefinition->capacity = INITIAL_DEFINITION_CAPACITY;
+    newDefinition->length = 0;
+
+    char *definitionMemory = calloc(INITIAL_DEFINITION_CAPACITY, sizeof(char));
+    if (!definitionMemory)
+    {
+        free(newDefinition);
+        return NULL;
+    }
+    newDefinition->value = definitionMemory;
+
+    unsigned int definitionLength = strlen(definition);
+    while (newDefinition->capacity < definitionLength)
+    {
+        if (!growDefinition(newDefinition))
+        {
+            free(definitionMemory);
+            free(newDefinition);
+        }
+    }
+
+    strcpy(definitionMemory, definition);
+
+    return newDefinition;
+}
+
+void destroyDefinition(Definition *definition)
+{
+    free(definition->value);
+    free(definition);
+}
+
+/* Definition Operations */
+
+int growDefinition(Definition *definition)
+{
+    unsigned int newCapacity = definition->capacity * 2;
+    
+    char *newData = calloc(newCapacity, sizeof(char));
+
+    if (!newData)
+    {
+        free(newData);
+        return 0;
+    }
+
+    memcpy(newData, definition->value, definition->capacity);
+    free(definition->value);
+    definition->value = newData;
+    definition->capacity = newCapacity;
+
+    return 1;
+}

@@ -1,6 +1,9 @@
 #ifndef DYNAMICARRAY_H
 #define DYNAMICARRAY_H
 
+#include <stdlib.h>
+#include <string.h>
+
 #define INITIAL_DEFINITION_CAPACITY 64
 
 typedef struct {
