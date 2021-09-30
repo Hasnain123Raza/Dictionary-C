@@ -13,10 +13,10 @@ typedef SinglyLinkedListNode Definitions;
 
 /* Constructor and Destructor */
 
-SinglyLinkedListNode *createSinglyLinkedList(char *definition);
-void destroySinglyLinkedList(SinglyLinkedListNode *singlyLinkedList);
+Definitions *createDefinitions(char *definition);
+void destroyDefinitions(Definitions *definitions);
 
-/* SinglyLinkedList Operations */
+/* Definitions Operations */
 
 
 

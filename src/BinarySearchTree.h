@@ -3,11 +3,15 @@
 
 #include "SinglyLinkedList.h"
 
+#include <ctype.h>
+#include <stdlib.h>
+#include <string.h>
+
 #define KEY_WORD_LENGTH 16
 
 typedef struct BinarySearchTreeNode {
     char word[KEY_WORD_LENGTH + 1];
-    SinglyLinkedListNode *definitions;
+    Definitions *definitions;
 
     struct BinarySearchTreeNode *left;
     struct BinarySearchTreeNode *right;
