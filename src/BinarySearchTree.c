@@ -8,6 +8,7 @@ Dictionary *createDictionary(char *word, char *definition)
     if (!dictionary)
         return NULL;
 
+    memset(dictionary->word, '\0', KEY_WORD_LENGTH + 1);
     strncpy(dictionary->word, word, KEY_WORD_LENGTH);
 
     Definitions *definitions = createDefinitions(definition);
@@ -129,12 +130,14 @@ Dictionary *removeWordDictionary(Dictionary *dictionary, char *word)
         else if (dictionary->left || dictionary->right)
         {
             Dictionary *childNode = dictionary->left ? dictionary->left : dictionary->right;
-            destroyDictionary(dictionary);
+            destroyDefinitions(dictionary->definitions);
+            free(dictionary);
             return childNode;
         }
         else
         {
-            destroyDictionary(dictionary);
+            destroyDefinitions(dictionary->definitions);
+            free(dictionary);
             return NULL;
         }
     }

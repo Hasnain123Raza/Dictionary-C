@@ -17,6 +17,7 @@ Definition *createDefinition(char *definition)
         free(newDefinition);
         return NULL;
     }
+    memset(definitionMemory, '\0', INITIAL_DEFINITION_CAPACITY);
     newDefinition->value = definitionMemory;
 
     unsigned int definitionLength = strlen(definition);
@@ -29,7 +30,7 @@ Definition *createDefinition(char *definition)
         }
     }
 
-    strcpy(definitionMemory, definition);
+    strcpy(newDefinition->value, definition);
 
     return newDefinition;
 }
@@ -53,6 +54,7 @@ int growDefinition(Definition *definition)
         free(newData);
         return 0;
     }
+    memset(newData, '\0', newCapacity);
 
     memcpy(newData, definition->value, definition->capacity);
     free(definition->value);
