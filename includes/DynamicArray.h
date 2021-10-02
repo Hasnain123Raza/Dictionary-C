@@ -23,5 +23,6 @@ void destroyDefinition(Definition *definition);
 /* Definition Operations */
 
 int growDefinition(Definition *defintion);
+int appendDefinition(Definition *definition, char *toAppend);
 
 #endif

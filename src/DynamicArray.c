@@ -17,20 +17,16 @@ Definition *createDefinition(char *definition)
         free(newDefinition);
         return NULL;
     }
+
     memset(definitionMemory, '\0', INITIAL_DEFINITION_CAPACITY);
     newDefinition->value = definitionMemory;
 
-    unsigned int definitionLength = strlen(definition);
-    while (newDefinition->capacity < definitionLength)
+    if (!appendDefinition(newDefinition, definition))
     {
-        if (!growDefinition(newDefinition))
-        {
-            free(definitionMemory);
-            free(newDefinition);
-        }
+        free(newDefinition);
+        free(definitionMemory);
+        return NULL;
     }
-
-    strcpy(newDefinition->value, definition);
 
     return newDefinition;
 }
@@ -60,6 +56,19 @@ int growDefinition(Definition *definition)
     free(definition->value);
     definition->value = newData;
     definition->capacity = newCapacity;
+
+    return 1;
+}
+
+int appendDefinition(Definition *definition, char *toAppend)
+{
+    unsigned int newLength = definition->length + strlen(toAppend);
+    while (definition->capacity < newLength)
+        if (!growDefinition(definition))
+            return 0;
+    
+    strcat(definition->value, toAppend);
+    definition->length = newLength;
 
     return 1;
 }
