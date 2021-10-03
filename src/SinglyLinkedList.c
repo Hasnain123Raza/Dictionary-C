@@ -54,13 +54,16 @@ Definitions *removeDefinitionDefinitions(Definitions *definitions, unsigned int 
         return definitions;
 
     if (index != definitionIndex)
-        definitions->next = removeDefinitionDefinitions(definitions->next, definitionIndex, index++);
+        definitions->next = removeDefinitionDefinitions(definitions->next, definitionIndex, ++index);
     else
     {
         Definitions *nextNode = definitions->next;
-        destroyDefinitions(definitions);
+        destroyDefinition(definitions->definition);
+        free(definitions);
         return nextNode;
     }
+
+    return definitions;
 }
 
 Definition *getDefinitionDefinitions(Definitions *definitions, unsigned int definitionIndex, unsigned int index)
@@ -69,7 +72,7 @@ Definition *getDefinitionDefinitions(Definitions *definitions, unsigned int defi
         return NULL;
     
     if (index != definitionIndex)
-        return getDefinitionDefinitions(definitions->next, definitionIndex, index++);
+        return getDefinitionDefinitions(definitions->next, definitionIndex, ++index);
     else
         return definitions->definition;
 }

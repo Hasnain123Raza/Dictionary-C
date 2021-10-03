@@ -63,7 +63,7 @@ int growDefinition(Definition *definition)
 int appendDefinition(Definition *definition, char *toAppend)
 {
     unsigned int newLength = definition->length + strlen(toAppend);
-    while (definition->capacity < newLength)
+    while (definition->capacity < newLength + 1)    /* accounting for the NULL character */
         if (!growDefinition(definition))
             return 0;
     

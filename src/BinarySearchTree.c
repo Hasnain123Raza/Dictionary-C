@@ -147,6 +147,9 @@ Dictionary *removeWordDictionary(Dictionary *dictionary, char *word)
 
 void removeDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int definitionIndex)
 {
+    if (dictionary->definitions->next == NULL)
+        removeWordDictionary(dictionary, word);
+
     Dictionary *node = searchNodeDictionary(dictionary, word);
     if (!node)
         return;
