@@ -145,16 +145,16 @@ Dictionary *removeWordDictionary(Dictionary *dictionary, char *word)
     return dictionary;
 }
 
-void removeDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int definitionIndex)
+Dictionary *removeDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int definitionIndex)
 {
-    if (dictionary->definitions->next == NULL)
-        removeWordDictionary(dictionary, word);
-
     Dictionary *node = searchNodeDictionary(dictionary, word);
-    if (!node)
-        return;
-
-    node->definitions = removeDefinitionDefinitions(node->definitions, definitionIndex, 0);
+    if (node)
+        if (node->definitions->next == NULL)
+            return removeWordDictionary(dictionary, word);
+        else
+            node->definitions = removeDefinitionDefinitions(node->definitions, definitionIndex, 0);
+    
+    return dictionary;
 }
 
 Definitions *searchWordDictionary(Dictionary *dictionary, char *word)

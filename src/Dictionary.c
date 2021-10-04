@@ -255,7 +255,7 @@ int processRemoveDefinition(Dictionary *dictionary, DynamicArray* input)
     
     regfree(&regexCompiled);
 
-    removeDefinitionDictionary(dictionary, word, atoi(definitionIndex) - 1);
+    dictionary = removeDefinitionDictionary(dictionary, word, atoi(definitionIndex) - 1);
 
     return 1;
 }
