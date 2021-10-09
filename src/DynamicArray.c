@@ -1,4 +1,4 @@
-#include "DynamicList.h"
+#include "DynamicArray.h"
 
 /* Constructor and Destructor */
 
