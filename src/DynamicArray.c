@@ -1,4 +1,4 @@
-#include "SinglyLinkedList.h"
+#include "DynamicList.h"
 
 /* Constructor and Destructor */
 
