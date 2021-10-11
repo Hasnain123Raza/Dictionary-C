@@ -21,13 +21,13 @@ typedef BinarySearchTreeNode Dictionary;
 
 /* Constructor and Destructor */
 
-Dictionary *createDictionary(char *word, char *definition);
+Dictionary *createDictionary(char *word, Definitions *definitions);
 void destroyDictionary(Dictionary *dictionary);
 
 /* Dictionary Operations */
 
-int insertWordDictionary(Dictionary *dictionary, char *word, char *definition);
-int insertDefinitionDictionary(Dictionary *dictionary, char *word, char *definition);
+int insertWordDictionary(Dictionary *dictionary, char *word, Definitions *definitions);
+int insertDefinitionDictionary(Dictionary *dictionary, char *word, Definition *definition);
 Dictionary *removeWordDictionary(Dictionary *dictionary, char *word);
 Dictionary *removeDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int definitionIndex);
 Definitions *searchWordDictionary(Dictionary *dictionary, char *word);

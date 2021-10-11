@@ -16,12 +16,12 @@ typedef SinglyLinkedListNode Definitions;
 
 /* Constructor and Destructor */
 
-Definitions *createDefinitions(char *definition);
+Definitions *createDefinitions(Definition *definition);
 void destroyDefinitions(Definitions *definitions);
 
 /* Definitions Operations */
 
-int pushDefinitionDefinitions(Definitions *definitions, char *definition);
+int pushDefinitionDefinitions(Definitions *definitions, Definition *definition);
 Definitions *removeDefinitionDefinitions(Definitions *definitions, unsigned int definitionIndex, unsigned int index);
 Definition *getDefinitionDefinitions(Definitions *definitions, unsigned int definitionIndex, unsigned int index);
 

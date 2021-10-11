@@ -2,19 +2,13 @@
 
 /* Constructor and Destructor */
 
-Definitions *createDefinitions(char *definition)
+Definitions *createDefinitions(Definition *definition)
 {
     Definitions *definitions = malloc(sizeof(Definitions));
     if (!definitions)
         return NULL;
     
-    Definition *newDefinition = createDefinition(definition);
-    if (!newDefinition)
-    {
-        free(definitions);
-        return NULL;
-    }
-    definitions->definition = newDefinition;
+    definitions->definition = definition;
 
     definitions->next = NULL;
 
@@ -32,7 +26,7 @@ void destroyDefinitions(Definitions *definitions)
 
 /* Definitions Operations */
 
-int pushDefinitionDefinitions(Definitions *definitions, char *definition)
+int pushDefinitionDefinitions(Definitions *definitions, Definition *definition)
 {
     if (definitions->next)
         return pushDefinitionDefinitions(definitions->next, definition);

@@ -2,7 +2,7 @@
 
 /* Constructor and Destructor */
 
-Dictionary *createDictionary(char *word, char *definition)
+Dictionary *createDictionary(char *word, Definitions *definitions)
 {
     Dictionary *dictionary = malloc(sizeof(Dictionary));
     if (!dictionary)
@@ -10,13 +10,6 @@ Dictionary *createDictionary(char *word, char *definition)
 
     memset(dictionary->word, '\0', KEY_WORD_LENGTH + 1);
     strncpy(dictionary->word, word, KEY_WORD_LENGTH);
-
-    Definitions *definitions = createDefinitions(definition);
-    if (!definitions)
-    {
-        free(dictionary);
-        return NULL;
-    }
 
     dictionary->definitions = definitions;
 
@@ -55,17 +48,17 @@ static Dictionary *searchNodeDictionary(Dictionary *dictionary, char *word)
         return dictionary;
 }
 
-int insertWordDictionary(Dictionary *dictionary, char *word, char *definition)
+int insertWordDictionary(Dictionary *dictionary, char *word, Definitions *definitions)
 {
     int comparisonResult = strcmp(word, dictionary->word);
 
     if (comparisonResult < 0)
     {
         if (dictionary->left)
-            return insertWordDictionary(dictionary->left, word, definition);
+            return insertWordDictionary(dictionary->left, word, definitions);
         else
         {
-            Dictionary *node = createDictionary(word, definition);
+            Dictionary *node = createDictionary(word, definitions);
             if (!node)
                 return 0;
             dictionary->left = node;
@@ -75,10 +68,10 @@ int insertWordDictionary(Dictionary *dictionary, char *word, char *definition)
     else if (comparisonResult > 0)
     {
         if (dictionary->right)
-            return insertWordDictionary(dictionary->right, word, definition);
+            return insertWordDictionary(dictionary->right, word, definitions);
         else
         {
-            Dictionary *node = createDictionary(word, definition);
+            Dictionary *node = createDictionary(word, definitions);
             if (!node)
                 return 0;
             dictionary->right = node;
@@ -89,7 +82,7 @@ int insertWordDictionary(Dictionary *dictionary, char *word, char *definition)
         return 0;   /* No Duplicates */
 }
 
-int insertDefinitionDictionary(Dictionary *dictionary, char *word, char *definition)
+int insertDefinitionDictionary(Dictionary *dictionary, char *word, Definition *definition)
 {
     Dictionary *node = searchNodeDictionary(dictionary, word);
     if (!node)

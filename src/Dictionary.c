@@ -19,28 +19,28 @@ int processSearchDefinition(Dictionary *dictionary, DynamicArray* input);
 
 int main(void)
 {
-    Dictionary *dictionary = createDictionary("Life", "The condition that distinguishes animals and plants from inorganic matter");
-    insertDefinitionDictionary(dictionary, "Life", "The existence of an individual human being or animal");
-    insertDefinitionDictionary(dictionary, "Life", "The period between the birth and death of a living thing, especially a human being");
+    Dictionary *dictionary = createDictionary("Life", createDefinitions(createDefinition("The condition that distinguishes animals and plants from inorganic matter")));
+    insertDefinitionDictionary(dictionary, "Life", createDefinition("The existence of an individual human being or animal"));
+    insertDefinitionDictionary(dictionary, "Life", createDefinition("The period between the birth and death of a living thing, especially a human being"));
 
-    insertWordDictionary(dictionary, "Bank", "The land alongside or sloping down to a river or lake");
-    insertDefinitionDictionary(dictionary, "Bank", "A slope, mass, or mound of a particular substance");
-    insertDefinitionDictionary(dictionary, "Bank", "A financial establishment");
+    insertWordDictionary(dictionary, "Bank", createDefinitions(createDefinition("The land alongside or sloping down to a river or lake")));
+    insertDefinitionDictionary(dictionary, "Bank", createDefinition("A slope, mass, or mound of a particular substance"));
+    insertDefinitionDictionary(dictionary, "Bank", createDefinition("A financial establishment"));
 
-    insertWordDictionary(dictionary, "Station", "A regular stopping place on a public transportation route");
-    insertDefinitionDictionary(dictionary, "Station", "A place or building where a specified activity or service is based");
+    insertWordDictionary(dictionary, "Station", createDefinitions(createDefinition("A regular stopping place on a public transportation route")));
+    insertDefinitionDictionary(dictionary, "Station", createDefinition("A place or building where a specified activity or service is based"));
 
-    insertWordDictionary(dictionary, "Fire", "Combustion or burning");
-    insertDefinitionDictionary(dictionary, "Fire", "A burning sensation in the body");
-    insertDefinitionDictionary(dictionary, "Fire", "Discharge a gun or other weapon");
+    insertWordDictionary(dictionary, "Fire", createDefinitions(createDefinition("Combustion or burning")));
+    insertDefinitionDictionary(dictionary, "Fire", createDefinition("A burning sensation in the body"));
+    insertDefinitionDictionary(dictionary, "Fire", createDefinition("Discharge a gun or other weapon"));
 
-    insertWordDictionary(dictionary, "Free", "Not under the control or in the power of another");
-    insertDefinitionDictionary(dictionary, "Free", "Not or no longer confined or imprisoned");
-    insertDefinitionDictionary(dictionary, "Free", "Without cost or payment");
+    insertWordDictionary(dictionary, "Free", createDefinitions(createDefinition("Not under the control or in the power of another")));
+    insertDefinitionDictionary(dictionary, "Free", createDefinition("Not or no longer confined or imprisoned"));
+    insertDefinitionDictionary(dictionary, "Free", createDefinition("Without cost or payment"));
 
-    insertWordDictionary(dictionary, "Stream", "A small, narrow river");
-    insertDefinitionDictionary(dictionary, "Stream", "A continuous flow of liquid, air, or gas");
-    insertDefinitionDictionary(dictionary, "Stream", "Run or flow in a continuous current in a specified direction");
+    insertWordDictionary(dictionary, "Stream", createDefinitions(createDefinition("A small, narrow river")));
+    insertDefinitionDictionary(dictionary, "Stream", createDefinition("A continuous flow of liquid, air, or gas"));
+    insertDefinitionDictionary(dictionary, "Stream", createDefinition("Run or flow in a continuous current in a specified direction"));
 
     printf("WELCOME TO DICTIONARY PROGRAM\n");
     printf("\n");
@@ -181,9 +181,9 @@ int processInsert(Dictionary *dictionary, DynamicArray* input)
     regfree(&regexCompiled);
 
     if (searchWordDictionary(dictionary, word))
-        insertDefinitionDictionary(dictionary, word, definition);
+        insertDefinitionDictionary(dictionary, word, createDefinition(definition));
     else
-        insertWordDictionary(dictionary, word, definition);
+        insertWordDictionary(dictionary, word, createDefinitions(createDefinition(definition)));
 
     return 1;
 }
