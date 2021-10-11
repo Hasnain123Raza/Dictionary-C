@@ -1,9 +1,9 @@
 #include "BinarySearchTree.h"
+#include "Commands.h"
 
 #include <stdio.h>
 #include <string.h>
 
-#define PREFIX_BUFFER_SIZE 256
 #define CHARS_PER_READ 16
 
 DynamicArray *readInput();

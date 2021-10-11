@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define PREFIX_BUFFER_SIZE 256
+
 int processCommand(Dictionary *dictionary, DynamicArray* input);
 int processInsert(Dictionary *dictionary, DynamicArray* input);
 int processRemove(Dictionary *dictionary, DynamicArray* input);

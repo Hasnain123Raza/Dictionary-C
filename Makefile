@@ -1,8 +1,8 @@
-all: driver
+all: main
 
-driver:
+main:
 	mkdir -p bin
-	gcc -o bin/driver -Iincludes `find src -name "*.c"`
+	gcc -o bin/main -Iincludes `find src -name "*.c"`
 
 clean:
 	rm -rf bin
