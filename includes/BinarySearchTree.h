@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define PREFIX_BUFFER_SIZE 256
 #define KEY_WORD_LENGTH 16
 
 typedef struct BinarySearchTreeNode {
@@ -32,5 +33,7 @@ Dictionary *removeWordDictionary(Dictionary *dictionary, char *word);
 Dictionary *removeDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int definitionIndex);
 Definitions *searchWordDictionary(Dictionary *dictionary, char *word);
 Definition *searchDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int definitionIndex);
+
+void printDictionary(Dictionary *dictionary, char *prefix, int isLeft);
 
 #endif

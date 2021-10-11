@@ -167,3 +167,33 @@ Definition *searchDefinitionDictionary(Dictionary *dictionary, char *word, unsig
 
     return getDefinitionDefinitions(dictionary->definitions, definitionIndex, 0);
 }
+
+
+
+void printDictionary(Dictionary *dictionary, char *prefix, int isLeft)
+{
+    if (dictionary == NULL)
+		return;
+
+	printf("%s", prefix);
+	printf(isLeft ? "├──" : "└──");
+	printf("%s", dictionary->word);
+	printf("\n");
+	
+	char newPrefix[PREFIX_BUFFER_SIZE] = {};
+	strcat(newPrefix, prefix);
+	strcat(newPrefix,  (isLeft ? "│   " : "    "));
+
+    Definitions* definitions = dictionary->definitions;
+    int counter = 1;
+    while (definitions)
+    {
+        printf("%s", newPrefix);
+        printf("%d: %s\n", counter, definitions->definition->value);
+        counter++;
+        definitions = definitions->next;
+    }
+
+	printDictionary(dictionary->left, newPrefix, 1);
+	printDictionary(dictionary->right, newPrefix, 0);
+}
