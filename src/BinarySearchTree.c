@@ -31,6 +31,28 @@ void destroyDictionary(Dictionary *dictionary)
     free(dictionary);
 }
 
+
+
+static Dictionary *dictionaryFromWordsArray(WordsArray *wordsArray, int start, int end)
+{
+    if (start > end)
+        return NULL;
+    
+    int mid = start + (end - start)/2;
+    Dictionary *dictionary = createDictionary(wordsArray->words[mid]->word, wordsArray->words[mid]->definitions);
+
+    dictionary->left = dictionaryFromWordsArray(wordsArray, start, mid - 1);
+    dictionary->right = dictionaryFromWordsArray(wordsArray, mid + 1, end);
+
+    return dictionary;
+}
+
+Dictionary *buildDictionaryFromWordsArray(WordsArray *wordsArray)
+{
+    Dictionary* dictionary = dictionaryFromWordsArray(wordsArray, 0, wordsArray->length - 1);
+    return dictionary;
+}
+
 /* Dictionary Operations */
 
 static Dictionary *searchNodeDictionary(Dictionary *dictionary, char *word)
@@ -156,7 +178,7 @@ Definitions *searchWordDictionary(Dictionary *dictionary, char *word)
     if (!node)
         return NULL;
 
-    return dictionary->definitions;
+    return node->definitions;
 }
 
 Definition *searchDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int definitionIndex)
@@ -165,7 +187,7 @@ Definition *searchDefinitionDictionary(Dictionary *dictionary, char *word, unsig
     if (!node)
         return NULL;
 
-    return getDefinitionDefinitions(dictionary->definitions, definitionIndex, 0);
+    return getDefinitionDefinitions(node->definitions, definitionIndex, 0);
 }
 
 

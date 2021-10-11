@@ -2,13 +2,13 @@
 #define BINARYSEARCHTREE_H
 
 #include "SinglyLinkedList.h"
+#include "WordsArray.h"
 
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 
 #define PREFIX_BUFFER_SIZE 256
-#define KEY_WORD_LENGTH 16
 
 typedef struct BinarySearchTreeNode {
     char word[KEY_WORD_LENGTH + 1];
@@ -24,6 +24,8 @@ typedef BinarySearchTreeNode Dictionary;
 
 Dictionary *createDictionary(char *word, Definitions *definitions);
 void destroyDictionary(Dictionary *dictionary);
+
+Dictionary *buildDictionaryFromWordsArray(WordsArray *wordsArray);
 
 /* Dictionary Operations */
 

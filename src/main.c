@@ -1,5 +1,8 @@
 #include "BinarySearchTree.h"
 #include "Commands.h"
+#include "Downloader.h"
+#include "FileUtility.h"
+#include "WordsArray.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -10,29 +13,32 @@ DynamicArray *readInput();
 
 int main(void)
 {
-    Dictionary *dictionary = createDictionary("Life", createDefinitions(createDefinition("The condition that distinguishes animals and plants from inorganic matter")));
-    insertDefinitionDictionary(dictionary, "Life", createDefinition("The existence of an individual human being or animal"));
-    insertDefinitionDictionary(dictionary, "Life", createDefinition("The period between the birth and death of a living thing, especially a human being"));
+    printf("Downloading words\n");
+    WordsArray *wordsArray = downloadWords();
+    if (!wordsArray)
+    {
+        printf("Unable to download words\n");
+        exit(EXIT_FAILURE);
+    }
 
-    insertWordDictionary(dictionary, "Bank", createDefinitions(createDefinition("The land alongside or sloping down to a river or lake")));
-    insertDefinitionDictionary(dictionary, "Bank", createDefinition("A slope, mass, or mound of a particular substance"));
-    insertDefinitionDictionary(dictionary, "Bank", createDefinition("A financial establishment"));
+    printf("Saving words in dictionary.txt\n");
+    if (!writeWordsToFile(wordsArray, "dictionary.txt"))
+    {
+        printf("Unable to write words to file\n");
+        destroyWordsArray(wordsArray);
+        exit(EXIT_FAILURE);
+    }
 
-    insertWordDictionary(dictionary, "Station", createDefinitions(createDefinition("A regular stopping place on a public transportation route")));
-    insertDefinitionDictionary(dictionary, "Station", createDefinition("A place or building where a specified activity or service is based"));
+    Dictionary *dictionary = buildDictionaryFromWordsArray(wordsArray);
+    if (!dictionary)
+    {
+        printf("Unable to build tree from words array\n");
+        exit(EXIT_FAILURE);
+    }
+    free(wordsArray->words);
+    free(wordsArray);
 
-    insertWordDictionary(dictionary, "Fire", createDefinitions(createDefinition("Combustion or burning")));
-    insertDefinitionDictionary(dictionary, "Fire", createDefinition("A burning sensation in the body"));
-    insertDefinitionDictionary(dictionary, "Fire", createDefinition("Discharge a gun or other weapon"));
-
-    insertWordDictionary(dictionary, "Free", createDefinitions(createDefinition("Not under the control or in the power of another")));
-    insertDefinitionDictionary(dictionary, "Free", createDefinition("Not or no longer confined or imprisoned"));
-    insertDefinitionDictionary(dictionary, "Free", createDefinition("Without cost or payment"));
-
-    insertWordDictionary(dictionary, "Stream", createDefinitions(createDefinition("A small, narrow river")));
-    insertDefinitionDictionary(dictionary, "Stream", createDefinition("A continuous flow of liquid, air, or gas"));
-    insertDefinitionDictionary(dictionary, "Stream", createDefinition("Run or flow in a continuous current in a specified direction"));
-
+    printf("\n");
     printf("WELCOME TO DICTIONARY PROGRAM\n");
     printf("\n");
     printf("Use the following commands to interact:\n");
@@ -52,6 +58,8 @@ int main(void)
             
         destroyDefinition(input);
     }
+
+    destroyDictionary(dictionary);
 
     return 0;
 }
