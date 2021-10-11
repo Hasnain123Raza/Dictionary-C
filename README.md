@@ -2,11 +2,13 @@
 
 ## Introduction
 
-This is a project that implements a dictionary (in the tradition sense rather than the data structure).
+This is a project that implements a dictionary (in the tradition sense rather than the data structure). It allows interaction with the dictionary using commands in a few different ways. Words and definitions can be inserted, removed, or searched and the dictionary can be printed (checkout usage section to get started). It web scrapes words and definitions from this website https://simple.wiktionary.org/
 
 ## Implementation Details
 
 The dictionary is implemented as a binary search tree with nodes that store a word and its definitions. To support multiple definitions for a single word, a singly linked list is used. To allow a variable length of definition, a dynamic array is used. Overall, this means a binary search tree has nodes containing singly linked lists, and the nodes of the singly linked list contain a dynamic array.
+
+Words and definitions are downloaded through web scraping. Curl library (https://curl.se/libcurl/) is used to download the HTML and Tidy library (https://www.html-tidy.org/developer/) is used to parse the HTML DOM and extracts information.
 
 A few basic commands are supported (check out usage section to get started). These are implemented using some rudimentary regular expressions. There is some level of input sanitization but try not to make too many mistakes.
 
