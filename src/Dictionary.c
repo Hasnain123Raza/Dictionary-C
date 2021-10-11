@@ -8,13 +8,6 @@
 
 DynamicArray *readInput();
 
-int processCommand(Dictionary *dictionary, DynamicArray* input);
-int processInsert(Dictionary *dictionary, DynamicArray* input);
-int processRemove(Dictionary *dictionary, DynamicArray* input);
-int processRemoveDefinition(Dictionary *dictionary, DynamicArray* input);
-int processSearch(Dictionary *dictionary, DynamicArray* input);
-int processSearchDefinition(Dictionary *dictionary, DynamicArray* input);
-
 int main(void)
 {
     Dictionary *dictionary = createDictionary("Life", createDefinitions(createDefinition("The condition that distinguishes animals and plants from inorganic matter")));
