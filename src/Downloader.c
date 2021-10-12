@@ -28,7 +28,8 @@ WordsArray *downloadWords()
 			printf("Unable to download words from %s\n", wordsURLBuffer.bp);
 			tidyBufFree(&wordsDownloadBuffer);
 			tidyBufFree(&wordsURLBuffer);
-			destroyWordsArray(wordsArray);
+			if (wordsArray)
+				destroyWordsArray(wordsArray);
 			return NULL;
 		}
 
@@ -39,7 +40,8 @@ WordsArray *downloadWords()
 			tidyRelease(wordsDocument);
 			tidyBufFree(&wordsDownloadBuffer);
 			tidyBufFree(&wordsURLBuffer);
-			destroyWordsArray(wordsArray);
+			if (wordsArray)
+				destroyWordsArray(wordsArray);
 			return NULL;
 		}
 
@@ -50,7 +52,8 @@ WordsArray *downloadWords()
 			tidyRelease(wordsDocument);
 			tidyBufFree(&wordsDownloadBuffer);
 			tidyBufFree(&wordsURLBuffer);
-			destroyWordsArray(wordsArray);
+			if (wordsArray)
+				destroyWordsArray(wordsArray);
 			return NULL;
 		}
         
@@ -59,7 +62,8 @@ WordsArray *downloadWords()
             tidyRelease(wordsDocument);
             tidyBufFree(&wordsDownloadBuffer);
             tidyBufFree(&wordsURLBuffer);
-            destroyWordsArray(wordsArray);
+	    if (wordsArray)
+            	destroyWordsArray(wordsArray);
             return NULL;
         }
 
