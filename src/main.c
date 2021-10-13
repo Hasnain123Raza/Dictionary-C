@@ -7,32 +7,45 @@
 #include <stdio.h>
 #include <string.h>
 
-DynamicArray *readInput();
-
-int main(void)
+int main(int argc, char *argv[])
 {
-    // printf("Reading file\n");
-    // WordsArray *wordsArray = readWordsFromFile("dictionary.txt");
-    // if (!wordsArray)
-    // {
-    //     printf("Unable to read words from file\n");
-    //     exit(EXIT_FAILURE);
-    // }
+    if (argc > 2)
+        printf("Too many arguments, ignoring some\n");
 
-    printf("Downloading words\n");
-    WordsArray *wordsArray = downloadWords(200);
-    if (!wordsArray)
+    int skip = 0;
+
+    if (argc > 1)
+        skip = atoi(argv[1]);
+    
+    WordsArray *wordsArray = NULL;
+
+    if (skip > 0)
     {
-        printf("Unable to download words\n");
-        exit(EXIT_FAILURE);
+        printf("Downloading words\n");
+        wordsArray = downloadWords(skip);
+        if (!wordsArray)
+        {
+            printf("Unable to download words\n");
+            exit(EXIT_FAILURE);
+        }
+
+        printf("Saving words in dictionary.txt\n");
+        if (!writeWordsToFile(wordsArray, "dictionary.txt"))
+        {
+            printf("Unable to write words to file\n");
+            destroyWordsArray(wordsArray);
+            exit(EXIT_FAILURE);
+        }
     }
-
-    printf("Saving words in dictionary.txt\n");
-    if (!writeWordsToFile(wordsArray, "dictionary.txt"))
+    else
     {
-        printf("Unable to write words to file\n");
-        destroyWordsArray(wordsArray);
-        exit(EXIT_FAILURE);
+        printf("Reading file\n");
+        wordsArray = readWordsFromFile("dictionary.txt");
+        if (!wordsArray)
+        {
+            printf("Unable to read words from file\n");
+            exit(EXIT_FAILURE);
+        }
     }
 
     Dictionary *dictionary = buildDictionaryFromWordsArray(wordsArray);
@@ -69,22 +82,3 @@ int main(void)
 
     return 0;
 }
-
-// DynamicArray *readInput()
-// {
-//     char inputBuffer[CHARS_PER_READ];
-//     DynamicArray *input = createDefinition("");
-
-//     while (fgets(inputBuffer, CHARS_PER_READ, stdin))
-//     {
-//         appendDefinition(input, inputBuffer);
-
-//         if (strlen(inputBuffer) + 1 < CHARS_PER_READ || inputBuffer[CHARS_PER_READ - 2] == '\n') /* ...\n\0 */
-//             break;
-//     }
-
-//     input->value[input->length - 1] = '\0';
-//     input->length--;
-
-//     return input;
-// }
