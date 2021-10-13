@@ -8,16 +8,19 @@ This is a project that implements a dictionary (in the tradition sense rather th
 
 The dictionary is implemented as a binary search tree with nodes that store a word and its definitions. To support multiple definitions for a single word, a singly linked list is used. To allow a variable length of definition, a dynamic array is used. Overall, this means a binary search tree has nodes containing singly linked lists, and the nodes of the singly linked list contain a dynamic array.
 
-Words and definitions are downloaded through web scraping. Curl library (https://curl.se/libcurl/) is used to download the HTML and Tidy library (https://www.html-tidy.org/developer/) is used to parse the HTML DOM and extracts information.
+Words and definitions are downloaded through web scraping. Curl library (https://curl.se/libcurl/) is used to download the HTML and Tidy library (https://www.html-tidy.org/developer/) is used to parse the HTML DOM and extracts information. Scrapped data is written to a file which can be read from in the future runs (checkout usage section to see how).
 
 A few basic commands are supported (check out usage section to get started). These are implemented using some rudimentary regular expressions. There is some level of input sanitization but try not to make too many mistakes.
 
 ## Usage
 
-Currently, five different commands are supported. All commands share two basic principles:
+The program accepts one command line argument. It is a integer argument specifying the amount of words to skip while webscrapping. For example, if the program is invoked with an argument of 50, only the every 50th word will have their definitions collected and be used in the program. If not argument is specified, the program assumes data is already available and attempts to read dictionary.txt file.
+
+Currently, five different commands are supported. All commands share three basic principles:
 
 1. The first character is a unique command selector
 2. The rest of the characters are reserved for arguments
+3. To deal with words with space, use quotation marks around them
 
 The five commands are as following:
 
