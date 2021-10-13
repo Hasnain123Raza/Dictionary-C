@@ -11,29 +11,29 @@ DynamicArray *readInput();
 
 int main(void)
 {
-    printf("Reading file\n");
-    WordsArray *wordsArray = readWordsFromFile("dictionary.txt");
+    // printf("Reading file\n");
+    // WordsArray *wordsArray = readWordsFromFile("dictionary.txt");
+    // if (!wordsArray)
+    // {
+    //     printf("Unable to read words from file\n");
+    //     exit(EXIT_FAILURE);
+    // }
+
+    printf("Downloading words\n");
+    WordsArray *wordsArray = downloadWords(200);
     if (!wordsArray)
     {
-        printf("Unable to read words from file\n");
+        printf("Unable to download words\n");
         exit(EXIT_FAILURE);
     }
 
-    // printf("Downloading words\n");
-    // WordsArray *wordsArray = downloadWords();
-    // if (!wordsArray)
-    // {
-    //     printf("Unable to download words\n");
-    //     exit(EXIT_FAILURE);
-    // }
-
-    // printf("Saving words in dictionary.txt\n");
-    // if (!writeWordsToFile(wordsArray, "dictionary.txt"))
-    // {
-    //     printf("Unable to write words to file\n");
-    //     destroyWordsArray(wordsArray);
-    //     exit(EXIT_FAILURE);
-    // }
+    printf("Saving words in dictionary.txt\n");
+    if (!writeWordsToFile(wordsArray, "dictionary.txt"))
+    {
+        printf("Unable to write words to file\n");
+        destroyWordsArray(wordsArray);
+        exit(EXIT_FAILURE);
+    }
 
     Dictionary *dictionary = buildDictionaryFromWordsArray(wordsArray);
     if (!dictionary)

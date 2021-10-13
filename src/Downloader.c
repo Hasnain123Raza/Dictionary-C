@@ -1,6 +1,6 @@
 #include "Downloader.h"
 
-static int scrapeWords(WordsArray **wordsArray, TidyNode *bodyNode);
+static int scrapeWords(WordsArray **wordsArray, TidyNode *bodyNode, int skip, int *skipCounter);
 static int scrapeNextWordsURL(TidyBuffer *wordsURLBuffer, TidyNode *bodyNode);
 static Definitions *downloadDefinitions(char *href);
 static Definitions *scrapeDefinitions(TidyDoc *definitionsDocument, TidyNode *bodyNode);
@@ -9,8 +9,9 @@ static int wordsChunkSelector(TidyNode *nodeToSelect);
 static int navigationSelector(TidyNode *nodeToSelect);
 static int definitionsOutputSelector(TidyNode *nodeToSelect);
 
-WordsArray *downloadWords()
+WordsArray *downloadWords(int skip)
 {
+    int skipCounter = 0;
     WordsArray *wordsArray = NULL;
 
 	TidyBuffer wordsURLBuffer = {};
@@ -57,7 +58,7 @@ WordsArray *downloadWords()
 			return NULL;
 		}
         
-        if (!scrapeWords(&wordsArray, &bodyNode))
+        if (!scrapeWords(&wordsArray, &bodyNode, skip, &skipCounter))
         {
             tidyRelease(wordsDocument);
             tidyBufFree(&wordsDownloadBuffer);
@@ -68,7 +69,7 @@ WordsArray *downloadWords()
         }
 
         int nextPageAvailable = scrapeNextWordsURL(&wordsURLBuffer, &bodyNode);
-        nextPageAvailable = 0;
+        //nextPageAvailable = 0;
 
         tidyRelease(wordsDocument);
 		tidyBufFree(&wordsDownloadBuffer);
@@ -82,7 +83,7 @@ WordsArray *downloadWords()
     }
 }
 
-static int scrapeWords(WordsArray **wordsArray, TidyNode *bodyNode)
+static int scrapeWords(WordsArray **wordsArray, TidyNode *bodyNode, int skip, int *skipCounter)
 {
     TidyNode wordsChunkNode;
     if (!searchTidyNode(bodyNode, &wordsChunkNode, wordsChunkSelector))
@@ -102,8 +103,9 @@ static int scrapeWords(WordsArray **wordsArray, TidyNode *bodyNode)
             char *titleValue = (char *)tidyAttrValue(titleAttribute);
             char *hrefValue = (char *)tidyAttrValue(hrefAttribute);
 
-            if (titleValue && hrefValue && isalpha(titleValue[0]))
+            if (titleValue && hrefValue && isalpha(titleValue[0]) && *skipCounter%skip == 0)
             {
+                printf("%s\n", titleValue);
                 Definitions *definitions = downloadDefinitions(hrefValue);
                 if (!definitions)
                 {
@@ -137,6 +139,8 @@ static int scrapeWords(WordsArray **wordsArray, TidyNode *bodyNode)
                     }
                 }
             }
+
+            (*skipCounter)++;
         }
 
         wordNode = tidyGetNext(wordNode);
@@ -157,17 +161,17 @@ static int scrapeNextWordsURL(TidyBuffer *wordsURLBuffer, TidyNode *bodyNode)
     TidyNode nextPageNode = tidyGetChild(navigationNode);
     nextPageNode = nextPageNode ? tidyGetNext(nextPageNode) : NULL;
     nextPageNode = nextPageNode ? tidyGetNext(nextPageNode) : NULL;
-    if (nextPageNode)
-    {
-        TidyAttr hrefAttribute = tidyAttrGetById(nextPageNode, TidyAttr_HREF);
-        const char *hrefValue = tidyAttrValue(hrefAttribute);
+    if (!nextPageNode)
+        return 0;
 
-        tidyBufFree(wordsURLBuffer);
-        tidyBufInit(wordsURLBuffer);
+    TidyAttr hrefAttribute = tidyAttrGetById(nextPageNode, TidyAttr_HREF);
+    const char *hrefValue = tidyAttrValue(hrefAttribute);
 
-        tidyBufAppend(wordsURLBuffer, BASE_URL, strlen(BASE_URL));
-        tidyBufAppend(wordsURLBuffer, (char *)hrefValue, strlen(hrefValue) + 1);
-    }
+    tidyBufFree(wordsURLBuffer);
+    tidyBufInit(wordsURLBuffer);
+
+    tidyBufAppend(wordsURLBuffer, BASE_URL, strlen(BASE_URL));
+    tidyBufAppend(wordsURLBuffer, (char *)hrefValue, strlen(hrefValue) + 1);
 
     return 1;
 }

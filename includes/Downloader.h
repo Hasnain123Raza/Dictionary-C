@@ -14,6 +14,6 @@
 #define BASE_URL "https://simple.wiktionary.org"
 #define FIRST_PAGE_URL "/wiki/Special:AllPages?from=A"
 
-WordsArray *downloadWords();
+WordsArray *downloadWords(int skip);
 
 #endif
