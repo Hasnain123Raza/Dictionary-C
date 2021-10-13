@@ -85,6 +85,12 @@ WordsArray *readWordsFromFile(char *fileName)
 			return NULL;
 		}
 
+		if (wordInput->length == -1)
+		{
+			destroyDefinition(wordInput);
+			return wordsArray;
+		}
+
 		Definitions *definitions = NULL;
 		while (1)
 		{
@@ -191,6 +197,8 @@ WordsArray *readWordsFromFile(char *fileName)
 
 		destroyDefinition(wordInput);
 		if (isEOF)
+		{
 			return wordsArray;
+		}
 	}
 }
