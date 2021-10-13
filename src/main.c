@@ -7,27 +7,33 @@
 #include <stdio.h>
 #include <string.h>
 
-#define CHARS_PER_READ 16
-
 DynamicArray *readInput();
 
 int main(void)
 {
-    printf("Downloading words\n");
-    WordsArray *wordsArray = downloadWords();
+    printf("Reading file\n");
+    WordsArray *wordsArray = readWordsFromFile("dictionary.txt");
     if (!wordsArray)
     {
-        printf("Unable to download words\n");
+        printf("Unable to read words from file\n");
         exit(EXIT_FAILURE);
     }
 
-    printf("Saving words in dictionary.txt\n");
-    if (!writeWordsToFile(wordsArray, "dictionary.txt"))
-    {
-        printf("Unable to write words to file\n");
-        destroyWordsArray(wordsArray);
-        exit(EXIT_FAILURE);
-    }
+    // printf("Downloading words\n");
+    // WordsArray *wordsArray = downloadWords();
+    // if (!wordsArray)
+    // {
+    //     printf("Unable to download words\n");
+    //     exit(EXIT_FAILURE);
+    // }
+
+    // printf("Saving words in dictionary.txt\n");
+    // if (!writeWordsToFile(wordsArray, "dictionary.txt"))
+    // {
+    //     printf("Unable to write words to file\n");
+    //     destroyWordsArray(wordsArray);
+    //     exit(EXIT_FAILURE);
+    // }
 
     Dictionary *dictionary = buildDictionaryFromWordsArray(wordsArray);
     if (!dictionary)
@@ -51,7 +57,7 @@ int main(void)
 
     while (1)
     {
-        DynamicArray *input = readInput();
+        DynamicArray *input = readInput(stdin);
         
         if (processCommand(dictionary, input))
             printf("\n");
@@ -64,21 +70,21 @@ int main(void)
     return 0;
 }
 
-DynamicArray *readInput()
-{
-    char inputBuffer[CHARS_PER_READ];
-    DynamicArray *input = createDefinition("");
+// DynamicArray *readInput()
+// {
+//     char inputBuffer[CHARS_PER_READ];
+//     DynamicArray *input = createDefinition("");
 
-    while (fgets(inputBuffer, CHARS_PER_READ, stdin))
-    {
-        appendDefinition(input, inputBuffer);
+//     while (fgets(inputBuffer, CHARS_PER_READ, stdin))
+//     {
+//         appendDefinition(input, inputBuffer);
 
-        if (strlen(inputBuffer) + 1 < CHARS_PER_READ || inputBuffer[CHARS_PER_READ - 2] == '\n') /* ...\n\0 */
-            break;
-    }
+//         if (strlen(inputBuffer) + 1 < CHARS_PER_READ || inputBuffer[CHARS_PER_READ - 2] == '\n') /* ...\n\0 */
+//             break;
+//     }
 
-    input->value[input->length - 1] = '\0';
-    input->length--;
+//     input->value[input->length - 1] = '\0';
+//     input->length--;
 
-    return input;
-}
+//     return input;
+// }
