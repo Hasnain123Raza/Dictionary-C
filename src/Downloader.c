@@ -103,7 +103,7 @@ static int scrapeWords(WordsArray **wordsArray, TidyNode *bodyNode, int skip, in
             char *titleValue = (char *)tidyAttrValue(titleAttribute);
             char *hrefValue = (char *)tidyAttrValue(hrefAttribute);
 
-            if (titleValue && hrefValue && isalpha(titleValue[0]) && *skipCounter%skip == 0)
+            if (titleValue && hrefValue && isalpha(titleValue[0]) && (skip == 0 || *skipCounter%skip == 0))
             {
                 printf("%s\n", titleValue);
                 Definitions *definitions = downloadDefinitions(hrefValue);

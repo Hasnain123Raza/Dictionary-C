@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     
     WordsArray *wordsArray = NULL;
 
-    if (skip > 0)
+    if (skip >= 0)
     {
         printf("Downloading words\n");
         wordsArray = downloadWords(skip);
