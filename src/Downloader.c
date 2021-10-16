@@ -103,7 +103,7 @@ static int scrapeWords(WordsArray **wordsArray, TidyNode *bodyNode, int skip, in
             char *titleValue = (char *)tidyAttrValue(titleAttribute);
             char *hrefValue = (char *)tidyAttrValue(hrefAttribute);
 
-            if (titleValue && hrefValue && isalpha(titleValue[0]) && (skip == 0 || *skipCounter%skip == 0))
+            if (titleValue && hrefValue && isalpha(titleValue[0]) && *skipCounter%skip == 0)
             {
                 printf("%s\n", titleValue);
                 Definitions *definitions = downloadDefinitions(hrefValue);
@@ -272,7 +272,7 @@ static Definitions *scrapeDefinitions(TidyDoc *definitionsDocument, TidyNode *bo
 			{
 				Definition *definition = NULL;
 
-                if (!scrapeDefinitionFromTree(definitionsDocument, &definition, &definitionNode))
+                if (!scrapeDefinitionFromTree(definitionsDocument, &definition, &definitionNode) || !definition)
                 {
                     if (definition)
                         destroyDefinition(definition);
