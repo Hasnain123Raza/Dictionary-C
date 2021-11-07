@@ -4,9 +4,11 @@
             "name": "Linux",
             "includePath": [
                 "${default}",
-                "${workspaceFolder}/includes/DataStructures",
                 "${workspaceFolder}/includes",
-                "${workspaceFolder}/includes/Utilities"
+                "${workspaceFolder}/includes/Core/DataStructures",
+                "${workspaceFolder}/includes/Core/Utilities",
+                "${workspaceFolder}/includes/Core",
+                "${workspaceFolder}/includes/CLI"
             ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "gnu17",
