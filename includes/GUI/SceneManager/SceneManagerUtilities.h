@@ -1,0 +1,4 @@
+#ifndef SCENE_MANAGER_UTILITIES_H
+#define SCENE_MANAGER_UTILITIES_H
+
+#endif

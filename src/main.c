@@ -2,6 +2,7 @@
 
 #include "Initializer.h"
 #include "CLIInterface.h"
+#include "GUIInterface.h"
 #include "Common.h"
 
 int main(int argc, char *argv[])
@@ -20,8 +21,13 @@ int main(int argc, char *argv[])
         {
             handleInputCLI(dictionary, &state);
         }
+        else if (state.mode == MODE_GUI)
+        {
+            handleInputGUI(dictionary, &state);
+        }
     }
 
+    terminateGUI();
     destroyDictionary(dictionary);
 
     exit(EXIT_SUCCESS);

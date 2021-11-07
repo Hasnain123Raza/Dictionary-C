@@ -37,6 +37,7 @@ int processCommand(Dictionary *dictionary, APPLICATION_STATE* applicationState, 
 
         case 'g':
             applicationState->mode = MODE_GUI;
+            return 1;
 
         case 'q':
             printf("Goodbye!\n");

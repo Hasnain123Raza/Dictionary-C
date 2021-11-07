@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "binarysearchtree.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "guiinterface.h": "c"
     }
 }

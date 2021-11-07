@@ -8,7 +8,12 @@
                 "${workspaceFolder}/includes/Core/DataStructures",
                 "${workspaceFolder}/includes/Core/Utilities",
                 "${workspaceFolder}/includes/Core",
-                "${workspaceFolder}/includes/CLI"
+                "${workspaceFolder}/includes/CLI",
+                "${workspaceFolder}/includes/GUI/Core",
+                "${workspaceFolder}/includes/GUI/Scene",
+                "${workspaceFolder}/includes/GUI/SceneManager",
+                "${workspaceFolder}/includes/GUI/SceneElement",
+                "${workspaceFolder}/includes/GUI"
             ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "gnu17",
