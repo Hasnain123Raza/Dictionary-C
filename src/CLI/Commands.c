@@ -11,7 +11,7 @@ static int processSearchWithSpaces(Dictionary *dictionary, DynamicArray* input);
 static int processSearchDefinition(Dictionary *dictionary, DynamicArray* input);
 static int processSearchDefinitionWithSpace(Dictionary *dictionary, DynamicArray* input);
 
-int processCommand(Dictionary *dictionary, DynamicArray* input)
+int processCommand(Dictionary *dictionary, APPLICATION_STATE* applicationState, DynamicArray* input)
 {
     if (strlen(input->value) == 0)
         {
@@ -35,9 +35,13 @@ int processCommand(Dictionary *dictionary, DynamicArray* input)
             printDictionary(dictionary, "", 0);
             return 1;
 
+        case 'g':
+            applicationState->mode = MODE_GUI;
+
         case 'q':
             printf("Goodbye!\n");
-            exit(EXIT_SUCCESS);
+            applicationState->done = 1;
+            return 1;
 
         default:
             printf("Invalid command selector, please try again\n");

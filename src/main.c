@@ -1,7 +1,8 @@
 #include <stdio.h>
 
 #include "Initializer.h"
-#include "Commands.h"
+#include "CLIInterface.h"
+#include "Common.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,25 +12,14 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    printf("\n");
-    printf("WELCOME TO DICTIONARY PROGRAM\n");
-    printf("\n");
-    printf("Use the following commands to interact:\n");
-    printf("i to insert\n");
-    printf("r to remove\n");
-    printf("s to search\n");
-    printf("p to print\n");
-    printf("q to quit\n");
-    printf("\n");
+    APPLICATION_STATE state = { MODE_CLI, 0 };
 
-    while (1)
+    while (!state.done)
     {
-        DynamicArray *input = readInput(stdin);
-        
-        if (processCommand(dictionary, input))
-            printf("\n");
-            
-        destroyDefinition(input);
+        if (state.mode == MODE_CLI)
+        {
+            handleInputCLI(dictionary, &state);
+        }
     }
 
     destroyDictionary(dictionary);
