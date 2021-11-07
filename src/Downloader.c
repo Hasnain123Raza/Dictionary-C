@@ -26,7 +26,7 @@ WordsArray *downloadWords(int skip)
 		tidyBufInit(&wordsDownloadBuffer);
 		if (!downloadHTML(wordsURLBuffer.bp, &wordsDownloadBuffer))
 		{
-			printf("Unable to download words from %s\n", wordsURLBuffer.bp);
+			fprintf(stderr, "Unable to download words from %s\n", wordsURLBuffer.bp);
 			tidyBufFree(&wordsDownloadBuffer);
 			tidyBufFree(&wordsURLBuffer);
 			if (wordsArray)
@@ -37,7 +37,7 @@ WordsArray *downloadWords(int skip)
 		TidyDoc wordsDocument = tidyCreate();
 		if (!loadTidyDocumentFromTidyBuffer(&wordsDocument, &wordsDownloadBuffer))
 		{
-			printf("Unable to load words document\n");
+			fprintf(stderr, "Unable to load words document\n");
 			tidyRelease(wordsDocument);
 			tidyBufFree(&wordsDownloadBuffer);
 			tidyBufFree(&wordsURLBuffer);
@@ -49,7 +49,7 @@ WordsArray *downloadWords(int skip)
 		TidyNode bodyNode = tidyGetBody(wordsDocument);
 		if (!bodyNode)
 		{
-			printf("Unable to find body node in words document\n");
+			fprintf(stderr, "Unable to find body node in words document\n");
 			tidyRelease(wordsDocument);
 			tidyBufFree(&wordsDownloadBuffer);
 			tidyBufFree(&wordsURLBuffer);
@@ -88,7 +88,7 @@ static int scrapeWords(WordsArray **wordsArray, TidyNode *bodyNode, int skip, in
     TidyNode wordsChunkNode;
     if (!searchTidyNode(bodyNode, &wordsChunkNode, wordsChunkSelector))
     {
-        printf("Unable to find words chunk node\n");
+        fprintf(stderr, "Unable to find words chunk node\n");
         return 0;
     }
 
@@ -115,7 +115,7 @@ static int scrapeWords(WordsArray **wordsArray, TidyNode *bodyNode, int skip, in
                 Word* word = createWord(titleValue, definitions);
                 if (!word)
                 {
-                    printf("Unable to allocate space for word\n");
+                    fprintf(stderr, "Unable to allocate space for word\n");
                     return 0;
                 }
 
@@ -124,7 +124,7 @@ static int scrapeWords(WordsArray **wordsArray, TidyNode *bodyNode, int skip, in
                     *wordsArray = createWordsArray(word);
                     if (!(*wordsArray))
                     {
-                        printf("Unable to allocate space for words array\n");
+                        fprintf(stderr, "Unable to allocate space for words array\n");
                         destroyWord(word);
                         return 0;
                     }
@@ -133,7 +133,7 @@ static int scrapeWords(WordsArray **wordsArray, TidyNode *bodyNode, int skip, in
                 {
                     if (!appendWordsArray(*wordsArray, word))
                     {
-                        printf("Unable to allocate space for words array\n");
+                        fprintf(stderr, "Unable to allocate space for words array\n");
                         destroyWord(word);
                         return 0;
                     }
@@ -154,7 +154,7 @@ static int scrapeNextWordsURL(TidyBuffer *wordsURLBuffer, TidyNode *bodyNode)
     TidyNode navigationNode;
     if (!searchTidyNode(bodyNode, &navigationNode, navigationSelector))
     {
-        printf("Unable to find words chunk node\n");
+        fprintf(stderr, "Unable to find words chunk node\n");
         return 0;
     }
 
@@ -189,7 +189,7 @@ static Definitions *downloadDefinitions(char *href)
 
 	if (!downloadHTML(definitionsURLBuffer.bp, &definitionsDownloadBuffer))
 	{
-		printf("Unable to download definitions from %s\n", definitionsURLBuffer.bp);
+		fprintf(stderr, "Unable to download definitions from %s\n", definitionsURLBuffer.bp);
 		tidyBufFree(&definitionsDownloadBuffer);
 		tidyBufFree(&definitionsURLBuffer);
 		return NULL;
@@ -198,7 +198,7 @@ static Definitions *downloadDefinitions(char *href)
 	TidyDoc definitionsDocument = tidyCreate();
 	if (!loadTidyDocumentFromTidyBuffer(&definitionsDocument, &definitionsDownloadBuffer))
 	{
-		printf("Unable to load definitions document\n");
+		fprintf(stderr, "Unable to load definitions document\n");
 		tidyRelease(definitionsDocument);
 		tidyBufFree(&definitionsDownloadBuffer);
 		tidyBufFree(&definitionsURLBuffer);
@@ -208,7 +208,7 @@ static Definitions *downloadDefinitions(char *href)
 	TidyNode bodyNode = tidyGetBody(definitionsDocument);
 	if (!bodyNode)
 	{
-		printf("Unable to find body node in definitions document\n");
+		fprintf(stderr, "Unable to find body node in definitions document\n");
 		tidyRelease(definitionsDocument);
 		tidyBufFree(&definitionsDownloadBuffer);
 		tidyBufFree(&definitionsURLBuffer);
@@ -224,7 +224,7 @@ static Definitions *downloadDefinitions(char *href)
         Definition *placeholder = createDefinition("This is a placeholder definition");
         if (!placeholder)
         {
-            printf("Unable to allocate space for placeholder definition\n");
+            fprintf(stderr, "Unable to allocate space for placeholder definition\n");
             tidyRelease(definitionsDocument);
 		    tidyBufFree(&definitionsDownloadBuffer);
 		    tidyBufFree(&definitionsURLBuffer);
@@ -234,7 +234,7 @@ static Definitions *downloadDefinitions(char *href)
         definitions = createDefinitions(placeholder);
         if (!definitions)
         {
-            printf("Unable to allocate space for placeholder definitions\n");
+            fprintf(stderr, "Unable to allocate space for placeholder definitions\n");
             destroyDefinition(placeholder);
             tidyRelease(definitionsDocument);
 		    tidyBufFree(&definitionsDownloadBuffer);
@@ -257,7 +257,7 @@ static Definitions *scrapeDefinitions(TidyDoc *definitionsDocument, TidyNode *bo
     TidyNode definitionsOutputNode;
     if (!searchTidyNode(bodyNode, &definitionsOutputNode, definitionsOutputSelector))
     {
-        printf("Unable to find definitions output node\n");
+        fprintf(stderr, "Unable to find definitions output node\n");
         return 0;
     }
 
@@ -288,7 +288,7 @@ static Definitions *scrapeDefinitions(TidyDoc *definitionsDocument, TidyNode *bo
                     definitions = createDefinitions(definition);
                     if (!definitions)
                     {
-                        printf("Unable to allocate space for definitions\n");
+                        fprintf(stderr, "Unable to allocate space for definitions\n");
                         destroyDefinition(definition);
                         return NULL;
                     }
@@ -297,7 +297,7 @@ static Definitions *scrapeDefinitions(TidyDoc *definitionsDocument, TidyNode *bo
                 {
                     if (!pushDefinitionDefinitions(definitions, definition))
                     {
-                        printf("Unable to allocate space for definitions\n");
+                        fprintf(stderr, "Unable to allocate space for definitions\n");
                         destroyDefinition(definition);
                         destroyDefinitions(definitions);
                         return NULL;
@@ -329,7 +329,7 @@ static int scrapeDefinitionFromTree(TidyDoc *definitionsDocument, Definition **d
                 *definition = createDefinition(definitionTextBuffer.bp);
                 if (!definition)
                 {
-                    printf("Unable to allocate space for definition\n");
+                    fprintf(stderr, "Unable to allocate space for definition\n");
                     tidyBufFree(&definitionTextBuffer);
                     return 0;
                 }
@@ -338,7 +338,7 @@ static int scrapeDefinitionFromTree(TidyDoc *definitionsDocument, Definition **d
             {
                 if (!appendDefinition(*definition, definitionTextBuffer.bp))
                 {
-                    printf("Unable to allocate space for definition\n");
+                    fprintf(stderr, "Unable to allocate space for definition\n");
                     tidyBufFree(&definitionTextBuffer);
                     return 0;
                 }

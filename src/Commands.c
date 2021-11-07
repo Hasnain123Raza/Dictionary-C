@@ -53,7 +53,7 @@ static int processInsert(Dictionary *dictionary, DynamicArray* input)
 
     if (regcomp(&regexCompiled, regexPattern, REG_EXTENDED) != 0)
     {
-        printf("Unable to compile regular expression for insert command\n");
+        fprintf(stderr, "Unable to compile regular expression for insert command\n");
         return 0;
     }
 
@@ -94,7 +94,7 @@ static int processInsertWithSpaces(Dictionary *dictionary, DynamicArray* input)
 
     if (regcomp(&regexCompiled, regexPattern, REG_EXTENDED) != 0)
     {
-        printf("Unable to compile regular expression for insert command\n");
+        fprintf(stderr, "Unable to compile regular expression for insert with spaces command\n");
         return 0;
     }
 
@@ -136,7 +136,7 @@ static int processRemove(Dictionary *dictionary, DynamicArray* input)
 
     if (regcomp(&regexCompiled, regexPattern, REG_EXTENDED) != 0)
     {
-        printf("Unable to compile regular expression for remove command\n");
+        fprintf(stderr, "Unable to compile regular expression for remove command\n");
         return 0;
     }
 
@@ -169,7 +169,7 @@ static int processRemoveWithSpaces(Dictionary *dictionary, DynamicArray* input)
 
     if (regcomp(&regexCompiled, regexPattern, REG_EXTENDED) != 0)
     {
-        printf("Unable to compile regular expression for remove command\n");
+        fprintf(stderr, "Unable to compile regular expression for remove with spaces command\n");
         return 0;
     }
 
@@ -202,7 +202,7 @@ static int processRemoveDefinition(Dictionary *dictionary, DynamicArray* input)
 
     if (regcomp(&regexCompiled, regexPattern, REG_EXTENDED) != 0)
     {
-        printf("Unable to compile regular expression for remove command\n");
+        fprintf(stderr, "Unable to compile regular expression for remove definition command\n");
         return 0;
     }
 
@@ -240,7 +240,7 @@ static int processRemoveDefinitionWithSpaces(Dictionary *dictionary, DynamicArra
 
     if (regcomp(&regexCompiled, regexPattern, REG_EXTENDED) != 0)
     {
-        printf("Unable to compile regular expression for remove command\n");
+        fprintf(stderr, "Unable to compile regular expression for remove definition with spaces command\n");
         return 0;
     }
 
@@ -279,7 +279,7 @@ static int processSearch(Dictionary *dictionary, DynamicArray* input)
 
     if (regcomp(&regexCompiled, regexPattern, REG_EXTENDED) != 0)
     {
-        printf("Unable to compile regular expression for search command\n");
+        fprintf(stderr, "Unable to compile regular expression for search command\n");
         return 0;
     }
 
@@ -324,7 +324,7 @@ static int processSearchWithSpaces(Dictionary *dictionary, DynamicArray* input)
 
     if (regcomp(&regexCompiled, regexPattern, REG_EXTENDED) != 0)
     {
-        printf("Unable to compile regular expression for search command\n");
+        fprintf(stderr, "Unable to compile regular expression for search with spaces command\n");
         return 0;
     }
 
@@ -369,7 +369,7 @@ static int processSearchDefinition(Dictionary *dictionary, DynamicArray* input)
 
     if (regcomp(&regexCompiled, regexPattern, REG_EXTENDED) != 0)
     {
-        printf("Unable to compile regular expression for remove command\n");
+        fprintf(stderr, "Unable to compile regular expression for search definition command\n");
         return 0;
     }
 
@@ -411,7 +411,7 @@ static int processSearchDefinitionWithSpace(Dictionary *dictionary, DynamicArray
 
     if (regcomp(&regexCompiled, regexPattern, REG_EXTENDED) != 0)
     {
-        printf("Unable to compile regular expression for remove command\n");
+        fprintf(stderr, "Unable to compile regular expression for search definition with spaces command\n");
         return 0;
     }
 

@@ -14,7 +14,7 @@ int downloadHTML(char *url, TidyBuffer *downloadBuffer)
 	{
 		if (curl_global_init(CURL_GLOBAL_ALL) != CURLE_OK)
 		{
-			printf("curl_global_init failed\n");
+			fprintf(stderr, "curl_global_init failed\n");
 			return 0;
 		}
 
@@ -25,28 +25,28 @@ int downloadHTML(char *url, TidyBuffer *downloadBuffer)
 	CURL *handle = curl_easy_init();
 	if (!handle)
 	{
-		printf("curl_easy_init failed\n");
+		fprintf(stderr, "curl_easy_init failed\n");
 		return 0;
 	}
 
 	char curlErrorBuffer[CURL_ERROR_SIZE];
 	if (curl_easy_setopt(handle, CURLOPT_ERRORBUFFER, curlErrorBuffer))
 	{
-		printf("curl_easy_setopt failed with CURLOPT_ERRORBUFFER\n");
+		fprintf(stderr, "curl_easy_setopt failed with CURLOPT_ERRORBUFFER\n");
 		curl_easy_cleanup(handle);
 		return 0;
 	}
 
 	if (curl_easy_setopt(handle, CURLOPT_URL, url) != CURLE_OK)
 	{
-		printf("curl_easy_setopt failed with CURLOPT_URL: %s\n", curlErrorBuffer);
+		fprintf(stderr, "curl_easy_setopt failed with CURLOPT_URL: %s\n", curlErrorBuffer);
 		curl_easy_cleanup(handle);
 		return 0;
 	}
 
 	if (curl_easy_setopt(handle, CURLOPT_FOLLOWLOCATION, 1L) != CURLE_OK)
 	{
-		printf("curl_easy_setopt failed with CURLOPT_FOLLOWLOCATION: %s\n", curlErrorBuffer);
+		fprintf(stderr, "curl_easy_setopt failed with CURLOPT_FOLLOWLOCATION: %s\n", curlErrorBuffer);
 		curl_easy_cleanup(handle);
 		return 0;
 	}
@@ -54,7 +54,7 @@ int downloadHTML(char *url, TidyBuffer *downloadBuffer)
 #ifdef DISABLE_CURLOPT_SSL_VERIFYPEER
 	if (curl_easy_setopt(handle, CURLOPT_SSL_VERIFYPEER, 0L) != CURLE_OK)
 	{
-		printf("curl_easy_setopt failed with CURLOPT_SSL_VERIFYPEER: %s\n", curlErrorBuffer);
+		fprintf(stderr, "curl_easy_setopt failed with CURLOPT_SSL_VERIFYPEER: %s\n", curlErrorBuffer);
 		curl_easy_cleanup(handle);
 		return 0;
 	}
@@ -62,21 +62,21 @@ int downloadHTML(char *url, TidyBuffer *downloadBuffer)
 
 	if (curl_easy_setopt(handle, CURLOPT_WRITEDATA, downloadBuffer) != CURLE_OK)
 	{
-		printf("curl_easy_setopt failed with CURLOPT_WRITEDATA: %s\n", curlErrorBuffer);
+		fprintf(stderr, "curl_easy_setopt failed with CURLOPT_WRITEDATA: %s\n", curlErrorBuffer);
 		curl_easy_cleanup(handle);
 		return 0;
 	}
 
 	if (curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, downloadWriteFunction) != CURLE_OK)
 	{
-		printf("curl_easy_setopt failed with CURLOPT_WRITEFUNCTION: %s\n", curlErrorBuffer);
+		fprintf(stderr, "curl_easy_setopt failed with CURLOPT_WRITEFUNCTION: %s\n", curlErrorBuffer);
 		curl_easy_cleanup(handle);
 		return 0;
 	}
 	
 	if (curl_easy_perform(handle) != CURLE_OK)
 	{
-		printf("curl_easy_perform failed: %s\n", curlErrorBuffer);
+		fprintf(stderr, "curl_easy_perform failed: %s\n", curlErrorBuffer);
 		curl_easy_cleanup(handle);
 		return 0;
 	}

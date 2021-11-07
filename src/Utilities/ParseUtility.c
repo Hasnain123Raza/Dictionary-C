@@ -6,33 +6,33 @@ int loadTidyDocumentFromTidyBuffer(TidyDoc *tidyDocument, TidyBuffer *inputBuffe
 	
 	if (!tidyOptSetBool(*tidyDocument, TidyXhtmlOut, yes))
 	{
-		printf("tidyOptSetBool failed with TidyXhtmlOut\n");
+		fprintf(stderr, "tidyOptSetBool failed with TidyXhtmlOut\n");
 		return 0;
 	}
 
 	if (tidySetErrorBuffer(*tidyDocument, &errorBuffer))
 	{
-		printf("tidySetErrorBuffer failed\n");
+		fprintf(stderr, "tidySetErrorBuffer failed\n");
 		return 0;
 	}
 
 	if (tidyParseBuffer(*tidyDocument, inputBuffer) == 2)
 	{
-		printf("tidyParseBuffer failed: %s\n", errorBuffer.bp);
+		fprintf(stderr, "tidyParseBuffer failed: %s\n", errorBuffer.bp);
 		tidyBufFree(&errorBuffer);
 		return 0;
 	}
 	
 	if (tidyCleanAndRepair(*tidyDocument) == 2)
 	{
-		printf("tidyCleanAndRepair failed: %s\n", errorBuffer.bp);
+		fprintf(stderr, "tidyCleanAndRepair failed: %s\n", errorBuffer.bp);
 		tidyBufFree(&errorBuffer);
 		return 0;
 	}
 
 	if (tidyRunDiagnostics(*tidyDocument) == 2)
 	{
-		printf("tidyRunDiagnostics failed: %s\n", errorBuffer.bp);
+		fprintf(stderr, "tidyRunDiagnostics failed: %s\n", errorBuffer.bp);
 		tidyBufFree(&errorBuffer);
 		return 0;
 	}

@@ -32,7 +32,7 @@ DynamicArray *readInput(FILE *stream)
 	DynamicArray *input = createDefinition("");
 	if (!input)
 	{
-		printf("Unable to allocate space for input\n");
+		fprintf(stderr, "Unable to allocate space for input\n");
 		return NULL;
 	}
 
@@ -40,7 +40,7 @@ DynamicArray *readInput(FILE *stream)
 	{
 		if (!appendDefinition(input, inputBuffer))
 		{
-			printf("Unable to allocate space for input\n");
+			fprintf(stderr, "Unable to allocate space for input\n");
 			destroyDefinition(input);
 			return NULL;
 		}
@@ -66,7 +66,7 @@ WordsArray *readWordsFromFile(char *fileName)
     FILE *dictionaryFile = fopen(fileName, "r");
 	if (!dictionaryFile)
 	{
-		printf("Unable to read dictionary file: %s\n", fileName);
+		fprintf(stderr, "Unable to read dictionary file: %s\n", fileName);
 		return NULL;
 	}
 
@@ -78,7 +78,7 @@ WordsArray *readWordsFromFile(char *fileName)
 		DynamicArray *wordInput = readInput(dictionaryFile);
 		if (!wordInput)
 		{
-			printf("Unable to allocate space for word input while reading dictionary file: %s\n", fileName);
+			fprintf(stderr, "Unable to allocate space for word input while reading dictionary file: %s\n", fileName);
 
 			if (wordsArray)
 				destroyWordsArray(wordsArray);
@@ -97,7 +97,7 @@ WordsArray *readWordsFromFile(char *fileName)
 			Definition *definition = readInput(dictionaryFile);
 			if (!definition)
 			{
-				printf("Unable to allocate space for definition while reading dictionary file: %s\n", fileName);
+				fprintf(stderr, "Unable to allocate space for definition while reading dictionary file: %s\n", fileName);
 				if (definitions)
 					destroyDefinitions(definitions);
 				if (wordsArray)
@@ -125,7 +125,7 @@ WordsArray *readWordsFromFile(char *fileName)
 				definitions = createDefinitions(definition);
 				if (!definitions)
 				{
-					printf("Unable to allocate space for definitions while reading dictionary file: %s\n", fileName);
+					fprintf(stderr, "Unable to allocate space for definitions while reading dictionary file: %s\n", fileName);
 					destroyDefinition(definition);
 					if (wordsArray)
 						destroyWordsArray(wordsArray);
@@ -138,7 +138,7 @@ WordsArray *readWordsFromFile(char *fileName)
 			{
 				if (!pushDefinitionDefinitions(definitions, definition))
 				{
-					printf("Unable to allocate space for definitions while reading dictionary file: %s\n", fileName);
+					fprintf(stderr, "Unable to allocate space for definitions while reading dictionary file: %s\n", fileName);
 					destroyDefinition(definition);
 					destroyDefinitions(definitions);
 					if (wordsArray)
@@ -156,7 +156,7 @@ WordsArray *readWordsFromFile(char *fileName)
 		Word *word = createWord(wordInput->value, definitions);
 		if (!word)
 		{
-			printf("Unable to allocate space for word while reading dictionary file: %s\n", fileName);
+			fprintf(stderr, "Unable to allocate space for word while reading dictionary file: %s\n", fileName);
 			if (definitions)
 				destroyDefinitions(definitions);
 			if (wordsArray)
@@ -170,7 +170,7 @@ WordsArray *readWordsFromFile(char *fileName)
 			wordsArray = createWordsArray(word);
 			if (!wordsArray)
 			{
-				printf("Unable to allocate space for words array while reading dictionary file: %s\n", fileName);
+				fprintf(stderr, "Unable to allocate space for words array while reading dictionary file: %s\n", fileName);
 				destroyWord(word);
 				if (definitions)
 					destroyDefinitions(definitions);
@@ -184,7 +184,7 @@ WordsArray *readWordsFromFile(char *fileName)
 		{
 			if (!appendWordsArray(wordsArray, word))
 			{
-				printf("Unable to allocate space for words array while reading dictionary file: %s\n", fileName);
+				fprintf(stderr, "Unable to allocate space for words array while reading dictionary file: %s\n", fileName);
 				destroyWord(word);
 				if (definitions)
 					destroyDefinitions(definitions);
