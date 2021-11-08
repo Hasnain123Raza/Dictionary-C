@@ -55,6 +55,26 @@ InsertScene *createInsertScene()
 
 static void insertButtonInputHandler(SceneManager *sceneManager, Scene *scene, SceneElement *sceneElement, int input)
 {
+    Dictionary *dictionary = sceneManager->userData;
+
+    TextInput *wordTextInput = scene->sceneElements[1];
+    SceneElementUserData *wordTextSceneElementUserData = wordTextInput->userData;
+    TextInputUserData *wordTextInputData = wordTextSceneElementUserData->data;
+    char *word = wordTextInputData->input;
+
+    TextInput *definitionTextInput = scene->sceneElements[2];
+    SceneElementUserData *definitionTextInputSceneElementUserData = definitionTextInput->userData;
+    TextInputUserData *definitionTextInputData = definitionTextInputSceneElementUserData->data;
+    char *definition = definitionTextInputData->input;
+
+    if (strlen(word) != 0 && strlen(definition) != 0)
+    {
+        if (searchWordDictionary(dictionary, word))
+            insertDefinitionDictionary(dictionary, word, createDefinition(definition));
+        else
+            insertWordDictionary(dictionary, word, createDefinitions(createDefinition(definition)));
+    }
+
     clearTextBufferTextLabel(scene->sceneElements[3]);
     appendTextBufferTextLabel(scene->sceneElements[3], "Output:\n\n", 2);
     drawSceneElement(scene->sceneElements[3], scene->focusedSceneElement == scene->sceneElements[3]);

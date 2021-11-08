@@ -99,6 +99,9 @@ void appendTextBufferTextLabel(TextLabel *textLabel, char *text, int maximumLine
                     startLine = line;
                 
                 char textCharacter = text[textIndex];
+                if (textCharacter == '\0')
+                    return;
+                
                 textBuffer[bufferIndex - 1] = textCharacter;
                 textIndex++;
 
