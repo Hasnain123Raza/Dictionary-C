@@ -14,12 +14,21 @@ SearchScene *createSearchScene()
     sceneElements[0] = createTextLabel("Search Menu", 0);
     sceneElements[1] = createTextInput("Word");
     sceneElements[2] = createTextInput("[Definition Index]");
-    sceneElements[3] = createTextLabel("Output:\n\n", 1);
+    sceneElements[3] = createTextLabel("Search Results:\n\n", 1);
     sceneElements[4] = createTextButton("Search", searchButtonInputHandler);
     sceneElements[5] = createTextButton("Back", backButtonInputHandler);
 
     SceneElement *searchResultTextLabel = sceneElements[3];
     wresize(searchResultTextLabel->window, 12, 32);
+    if (!refreshTextBufferTextLabel(searchResultTextLabel))
+    {
+        fprintf(stderr, "Unable to allocate space for text label text buffer\n");
+        freeSceneElements(sceneElements, totalSceneElements);
+        return NULL;
+    }
+
+    clearTextBufferTextLabel(searchResultTextLabel);
+    appendTextBufferTextLabel(searchResultTextLabel, "Search Results:\n\n", 2);
 
     SceneUserData *sceneUserData = malloc(sizeof(SceneUserData));
     if (!sceneUserData)
@@ -46,7 +55,58 @@ SearchScene *createSearchScene()
 
 static void searchButtonInputHandler(SceneManager *sceneManager, Scene *scene, SceneElement *sceneElement, int input)
 {
-    setTextTextLabel(scene->sceneElements[3], "Output:\n\nSearch Successful");
+    Dictionary *dictionary = sceneManager->userData;
+    
+    TextInput *wordTextInput = scene->sceneElements[1];
+    SceneElementUserData *wordTextInputSceneElementUserData = wordTextInput->userData;
+    TextInputUserData *wordTextInputData = wordTextInputSceneElementUserData->data;
+    char *word = wordTextInputData->input;
+
+    TextInput *definitionIndexTextInput = scene->sceneElements[2];
+    SceneElementUserData *definitionIndexTextInputSceneElementUserData = definitionIndexTextInput->userData;
+    TextInputUserData *definitionIndexTextInputData = definitionIndexTextInputSceneElementUserData->data;
+    char *definitionIndex = definitionIndexTextInputData->input;
+
+    TextLabel *searchResultTextLabel = scene->sceneElements[3];
+
+    Definition *definition = NULL;
+    Definitions *definitions = NULL;
+
+    if (strlen(word) > 0)
+    {
+        if (strlen(definitionIndex) > 0)
+        {
+            definition = searchDefinitionDictionary(dictionary, word, atoi(definitionIndex));
+        }
+        else
+        {
+            definitions = searchWordDictionary(dictionary, word);
+        }
+    }
+
+    clearTextBufferTextLabel(searchResultTextLabel);
+    appendTextBufferTextLabel(searchResultTextLabel, "Search Results:\n\n", 2);
+
+    if (definition)
+    {
+        char textToAppend[definition->length + 4];
+        memset(textToAppend, 0, definition->length + 4);
+        sprintf(textToAppend, "> %s\n", definition->value);
+        appendTextBufferTextLabel(searchResultTextLabel, textToAppend, 100);
+    }
+    else if (definitions)
+    {
+        while (definitions)
+        {
+            char textToAppend[definitions->definition->length + 4];
+            memset(textToAppend, 0, definitions->definition->length + 4);
+            sprintf(textToAppend, "> %s\n", definitions->definition->value);
+            appendTextBufferTextLabel(searchResultTextLabel, textToAppend, 2);
+            definitions = definitions->next;
+        }
+    }
+
+    clearSceneElement(scene->sceneElements[3]);
     drawSceneElement(scene->sceneElements[3], scene->focusedSceneElement == scene->sceneElements[3]);
 }
 
@@ -56,7 +116,8 @@ static void backButtonInputHandler(SceneManager *sceneManager, Scene *scene, Sce
     {
         clearTextInput(scene->sceneElements[1]);
         clearTextInput(scene->sceneElements[2]);
-        setTextTextLabel(scene->sceneElements[3], "Output:\n\n");
+        clearTextBufferTextLabel(scene->sceneElements[3]);
+        appendTextBufferTextLabel(scene->sceneElements[3], "Search Results:\n\n", 2);
         setSceneByIDSceneManager(sceneManager, COMMAND_SCENE);
     }
 }

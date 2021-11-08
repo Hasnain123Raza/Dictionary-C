@@ -20,6 +20,15 @@ RemoveScene *createRemoveScene()
 
     SceneElement *removeStatusTextLabel = sceneElements[3];
     wresize(removeStatusTextLabel->window, 12, 32);
+    if (!refreshTextBufferTextLabel(removeStatusTextLabel))
+    {
+        fprintf(stderr, "Unable to allocate space for text label text buffer\n");
+        freeSceneElements(sceneElements, totalSceneElements);
+        return NULL;
+    }
+
+    clearTextBufferTextLabel(removeStatusTextLabel);
+    appendTextBufferTextLabel(removeStatusTextLabel, "Output:\n\n", 2);
 
     SceneUserData *sceneUserData = malloc(sizeof(SceneUserData));
     if (!sceneUserData)
@@ -46,7 +55,8 @@ RemoveScene *createRemoveScene()
 
 static void removeButtonInputHandler(SceneManager *sceneManager, Scene *scene, SceneElement *sceneElement, int input)
 {
-    setTextTextLabel(scene->sceneElements[3], "Output:\n\nRemove Successful");
+    clearTextBufferTextLabel(scene->sceneElements[3]);
+    appendTextBufferTextLabel(scene->sceneElements[3], "Output:\n\n", 2);
     drawSceneElement(scene->sceneElements[3], scene->focusedSceneElement == scene->sceneElements[3]);
 }
 
@@ -56,7 +66,8 @@ static void backButtonInputHandler(SceneManager *sceneManager, Scene *scene, Sce
     {
         clearTextInput(scene->sceneElements[1]);
         clearTextInput(scene->sceneElements[2]);
-        setTextTextLabel(scene->sceneElements[3], "Output:\n\n");
+        clearTextBufferTextLabel(scene->sceneElements[3]);
+        appendTextBufferTextLabel(scene->sceneElements[3], "Output:\n\n", 2);
         setSceneByIDSceneManager(sceneManager, COMMAND_SCENE);
     }
 }

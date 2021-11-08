@@ -21,8 +21,10 @@ TextLabel *createTextLabel(char *text, int large)
         return NULL;
     }
     textLabelUserData->large = large;
-    textLabelUserData->largeText = NULL;
+    textLabelUserData->textBuffer = NULL;
     sceneElementUserData->data = textLabelUserData;
+    if (!large)
+        strncpy(textLabelUserData->text, text, SCENE_ELEMENT_TEXT_LENGTH);    
 
     int height = SCENE_ELEMENT_HEIGHT;
     int width = SCENE_ELEMENT_TEXT_X_PADDING + strlen(text) + SCENE_ELEMENT_TEXT_X_PADDING;
@@ -38,28 +40,88 @@ TextLabel *createTextLabel(char *text, int large)
         return NULL;
     }
 
-    setTextTextLabel(textLabel, text);
     return textLabel;
 }
 
-void setTextTextLabel(TextLabel *textLabel, char *text)
+int refreshTextBufferTextLabel(TextLabel *textLabel)
 {
     SceneElementUserData *sceneElementUserData = textLabel->userData;
     TextLabelUserData *textLabelUserData = sceneElementUserData->data;
-    if (textLabelUserData->large)
+    if (textLabelUserData->textBuffer)
+        free(textLabelUserData->textBuffer);
+    
+    int textLabelHeight;
+    int textLabelWidth;
+    getmaxyx(textLabel->window, textLabelHeight, textLabelWidth);
+    int textBufferSize = (textLabelHeight - 2) * (textLabelWidth - 4) + 1;
+
+    char *textBuffer = malloc(textBufferSize * sizeof(char));
+    if (!textBuffer)
     {
-        if (textLabelUserData->largeText)
-            free(textLabelUserData->largeText);
-        
-        int textSize = strlen(text) + 1;
-        char *largeText = malloc(textSize * sizeof(char));
-        strncpy(largeText, text, textSize);
-        textLabelUserData->largeText = largeText;
+        fprintf(stderr, "Unable to allocate space for text buffer\n");
+        return 0;
     }
-    else
+    memset(textBuffer, '\0', textBufferSize);
+    textLabelUserData->textBuffer = textBuffer;
+
+    return 1;
+}
+
+void appendTextBufferTextLabel(TextLabel *textLabel, char *text, int maximumLines)
+{
+    SceneElementUserData *sceneElementUserData = textLabel->userData;
+    TextLabelUserData *textLabelUserData = sceneElementUserData->data;
+    char *textBuffer = textLabelUserData->textBuffer;
+
+    int textLabelHeight;
+    int textLabelWidth;
+    getmaxyx(textLabel->window, textLabelHeight, textLabelWidth);
+
+    int lineLength = textLabelWidth - 4;
+    int totalLines = textLabelHeight - 2;
+    
+    int textIndex = 0;
+    int bufferIndex = 0;
+    int startLine = -1;
+    for (int line = 0; line < totalLines; line++)
     {
-        strncpy(textLabelUserData->text, text, SCENE_ELEMENT_TEXT_LENGTH);
+        if (startLine != -1)
+            if (startLine + maximumLines == line)
+                break;
+
+        for (int column = 0; column < lineLength; column++)
+        {
+            char currentCharacter = textBuffer[bufferIndex];
+            bufferIndex++;
+            if (currentCharacter == '\0')
+            {
+                if (startLine == -1)
+                    startLine = line;
+                
+                char textCharacter = text[textIndex];
+                textBuffer[bufferIndex - 1] = textCharacter;
+                textIndex++;
+
+                if (textCharacter == '\n')
+                    break;
+            }
+            else if (currentCharacter == '\n')
+                break;
+        }
     }
+}
+
+void clearTextBufferTextLabel(TextLabel *textLabel)
+{
+    SceneElementUserData *sceneElementUserData = textLabel->userData;
+    TextLabelUserData *textLabelUserData = sceneElementUserData->data;
+
+    int textLabelHeight;
+    int textLabelWidth;
+    getmaxyx(textLabel->window, textLabelHeight, textLabelWidth);
+    int textBufferSize = (textLabelHeight - 2) * (textLabelWidth - 4) + 1;
+
+    memset(textLabelUserData->textBuffer, '\0', textBufferSize);
 }
 
 static void drawHandler(SceneElement *sceneElement, int focused)
@@ -72,15 +134,15 @@ static void drawHandler(SceneElement *sceneElement, int focused)
     if (!textLabelUserData->large)
         putStringInCenter(sceneElement->window, textLabelUserData->text);
     else
-        putStringInWindow(sceneElement->window, textLabelUserData->largeText);
+        putStringInWindow(sceneElement->window, textLabelUserData->textBuffer);
 }
 
 static void freeUserDataHandler(SceneElement *sceneElement)
 {
     SceneElementUserData *sceneElementUserData = sceneElement->userData;
     TextLabelUserData *textLabelUserData = sceneElementUserData->data;
-    if (textLabelUserData->large)
-        free(textLabelUserData->largeText);
+    if (textLabelUserData->large && textLabelUserData->textBuffer)
+        free(textLabelUserData->textBuffer);
     
     sceneElementFreeUserDataHandler(sceneElement);
 }

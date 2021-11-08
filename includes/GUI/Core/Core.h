@@ -29,6 +29,7 @@ typedef struct {
     int totalScenes;
     int paused;
     int done;
+    void *userData;
 } SceneManager;
 
 typedef void (*SceneElementDrawHandler)(SceneElement*, int);

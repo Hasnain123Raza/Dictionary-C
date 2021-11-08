@@ -14,6 +14,7 @@ SceneManager *createSceneManager(Scene *scenes[], int totalScenes)
     sceneManager->totalScenes = totalScenes;
     sceneManager->paused = 0;
     sceneManager->done = 0;
+    sceneManager->userData = NULL;
 
     return sceneManager;
 }

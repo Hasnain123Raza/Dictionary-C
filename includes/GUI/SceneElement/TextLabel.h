@@ -17,10 +17,12 @@ typedef SceneElement TextLabel;
 typedef struct {
     int large;
     char text[SCENE_ELEMENT_TEXT_LENGTH + 1];
-    char *largeText;
+    char *textBuffer;
 } TextLabelUserData;
 
 TextLabel *createTextLabel(char *text, int large);
-void setTextTextLabel(TextLabel *textLabel, char *text);
+int refreshTextBufferTextLabel(TextLabel *textLabel);
+void appendTextBufferTextLabel(TextLabel *textLabel, char *text, int maximumLines);
+void clearTextBufferTextLabel(TextLabel *textLabel);
 
 #endif

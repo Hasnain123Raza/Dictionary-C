@@ -21,6 +21,15 @@ HelpScene *createHelpScene()
 
     SceneElement *helpTextLabel = sceneElements[1];
     wresize(helpTextLabel->window, 16, 48);
+    if (!refreshTextBufferTextLabel(helpTextLabel))
+    {
+        fprintf(stderr, "Unable to allocate space for text label text buffer\n");
+        freeSceneElements(sceneElements, totalSceneElements);
+        return NULL;
+    }
+
+    clearTextBufferTextLabel(helpTextLabel);
+    appendTextBufferTextLabel(helpTextLabel, helpText, 100);
 
     SceneUserData *sceneUserData = malloc(sizeof(SceneUserData));
     if (!sceneUserData)

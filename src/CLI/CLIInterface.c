@@ -29,6 +29,7 @@ static void printWelcomeMessage()
     printf("r to remove\n");
     printf("s to search\n");
     printf("p to print\n");
+    printf("g to switch to graphical mode\n");
     printf("q to quit\n");
     printf("\n");
 }

@@ -13,9 +13,10 @@ void handleInputGUI(Dictionary *dictionary, APPLICATION_STATE* applicationState)
         if (!sceneManager)
         {
             fprintf(stderr, "Unable to initialize scene manager\n");
-            sceneManager->paused = 1;
+            applicationState->mode = MODE_CLI;
             return;
         }
+        sceneManager->userData = dictionary;
     }
 
     if (sceneManager->paused)
@@ -28,7 +29,6 @@ void handleInputGUI(Dictionary *dictionary, APPLICATION_STATE* applicationState)
     if (input == KEY_F(1))
     {
         sceneManager->done = 1;
-        return;
     }
     else
     {
