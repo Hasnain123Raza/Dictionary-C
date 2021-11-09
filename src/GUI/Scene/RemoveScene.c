@@ -55,6 +55,30 @@ RemoveScene *createRemoveScene()
 
 static void removeButtonInputHandler(SceneManager *sceneManager, Scene *scene, SceneElement *sceneElement, int input)
 {
+    Dictionary *dictionary = sceneManager->userData;
+
+    TextInput *wordTextInput = scene->sceneElements[1];
+    SceneElementUserData *wordTextSceneElementUserData = wordTextInput->userData;
+    TextInputUserData *wordTextInputData = wordTextSceneElementUserData->data;
+    char *word = wordTextInputData->input;
+
+    TextInput *definitionIndexTextInput = scene->sceneElements[2];
+    SceneElementUserData *definitionIndexTextInputSceneElementUserData = definitionIndexTextInput->userData;
+    TextInputUserData *definitionIndexTextInputData = definitionIndexTextInputSceneElementUserData->data;
+    char *definitionIndex = definitionIndexTextInputData->input;
+
+    if (strlen(word) != 0)
+    {
+        if (strlen(definitionIndex) == 0)
+        {
+            dictionary = removeWordDictionary(dictionary, word);
+        }
+        else
+        {
+            dictionary = removeDefinitionDictionary(dictionary, word, atoi(definitionIndex) - 1);
+        }
+    }
+
     clearTextBufferTextLabel(scene->sceneElements[3]);
     appendTextBufferTextLabel(scene->sceneElements[3], "Output:\n\n", 2);
     drawSceneElement(scene->sceneElements[3], scene->focusedSceneElement == scene->sceneElements[3]);

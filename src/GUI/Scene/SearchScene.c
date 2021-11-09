@@ -76,7 +76,7 @@ static void searchButtonInputHandler(SceneManager *sceneManager, Scene *scene, S
     {
         if (strlen(definitionIndex) > 0)
         {
-            definition = searchDefinitionDictionary(dictionary, word, atoi(definitionIndex));
+            definition = searchDefinitionDictionary(dictionary, word, atoi(definitionIndex) - 1);
         }
         else
         {
