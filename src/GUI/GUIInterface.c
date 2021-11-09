@@ -5,7 +5,7 @@ static SceneManager *sceneManager = NULL;
 static int ensureSceneGeneration(Scene *scenes[], int totalScenes);
 static void freeScenes(Scene *scenes[], int totalScenes);
 
-void handleInputGUI(Dictionary *dictionary, APPLICATION_STATE* applicationState)
+void handleInputGUI(Dictionary **dictionary, APPLICATION_STATE* applicationState)
 {
     if (!sceneManager)
     {

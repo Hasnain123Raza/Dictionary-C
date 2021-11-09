@@ -2,7 +2,7 @@
 
 static void printWelcomeMessage();
 
-void handleInputCLI(Dictionary *dictionary, APPLICATION_STATE* applicationState)
+void handleInputCLI(Dictionary **dictionary, APPLICATION_STATE* applicationState)
 {
     static int firstTime = 1;
     if (firstTime)

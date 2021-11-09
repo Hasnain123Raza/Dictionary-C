@@ -55,7 +55,7 @@ RemoveScene *createRemoveScene()
 
 static void removeButtonInputHandler(SceneManager *sceneManager, Scene *scene, SceneElement *sceneElement, int input)
 {
-    Dictionary *dictionary = sceneManager->userData;
+    Dictionary **dictionary = sceneManager->userData;
 
     TextInput *wordTextInput = scene->sceneElements[1];
     SceneElementUserData *wordTextSceneElementUserData = wordTextInput->userData;
@@ -71,11 +71,11 @@ static void removeButtonInputHandler(SceneManager *sceneManager, Scene *scene, S
     {
         if (strlen(definitionIndex) == 0)
         {
-            dictionary = removeWordDictionary(dictionary, word);
+            *dictionary = removeWordDictionary(*dictionary, word);
         }
         else
         {
-            dictionary = removeDefinitionDictionary(dictionary, word, atoi(definitionIndex) - 1);
+            *dictionary = removeDefinitionDictionary(*dictionary, word, atoi(definitionIndex) - 1);
         }
     }
 

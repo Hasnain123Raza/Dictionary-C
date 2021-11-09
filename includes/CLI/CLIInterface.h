@@ -7,6 +7,6 @@
 #include "Common.h"
 #include "FileUtility.h"
 
-void handleInputCLI(Dictionary *dictionary, APPLICATION_STATE* applicationState);
+void handleInputCLI(Dictionary **dictionary, APPLICATION_STATE* applicationState);
 
 #endif

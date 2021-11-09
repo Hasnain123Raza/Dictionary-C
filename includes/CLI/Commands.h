@@ -12,6 +12,6 @@
 
 #define PREFIX_BUFFER_SIZE 256
 
-int processCommand(Dictionary *dictionary, APPLICATION_STATE* applicationState, DynamicArray* input);
+int processCommand(Dictionary **dictionary, APPLICATION_STATE* applicationState, DynamicArray* input);
 
 #endif

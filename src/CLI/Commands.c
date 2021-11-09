@@ -1,17 +1,17 @@
 #include "Commands.h"
 
-static int processInsert(Dictionary *dictionary, DynamicArray* input);
-static int processInsertWithSpaces(Dictionary *dictionary, DynamicArray* input);
-static int processRemove(Dictionary *dictionary, DynamicArray* input);
-static int processRemoveWithSpaces(Dictionary *dictionary, DynamicArray* input);
-static int processRemoveDefinition(Dictionary *dictionary, DynamicArray* input);
-static int processRemoveDefinitionWithSpaces(Dictionary *dictionary, DynamicArray* input);
-static int processSearch(Dictionary *dictionary, DynamicArray* input);
-static int processSearchWithSpaces(Dictionary *dictionary, DynamicArray* input);
-static int processSearchDefinition(Dictionary *dictionary, DynamicArray* input);
-static int processSearchDefinitionWithSpace(Dictionary *dictionary, DynamicArray* input);
+static int processInsert(Dictionary **dictionary, DynamicArray* input);
+static int processInsertWithSpaces(Dictionary **dictionary, DynamicArray* input);
+static int processRemove(Dictionary **dictionary, DynamicArray* input);
+static int processRemoveWithSpaces(Dictionary **dictionary, DynamicArray* input);
+static int processRemoveDefinition(Dictionary **dictionary, DynamicArray* input);
+static int processRemoveDefinitionWithSpaces(Dictionary **dictionary, DynamicArray* input);
+static int processSearch(Dictionary **dictionary, DynamicArray* input);
+static int processSearchWithSpaces(Dictionary **dictionary, DynamicArray* input);
+static int processSearchDefinition(Dictionary **dictionary, DynamicArray* input);
+static int processSearchDefinitionWithSpace(Dictionary **dictionary, DynamicArray* input);
 
-int processCommand(Dictionary *dictionary, APPLICATION_STATE* applicationState, DynamicArray* input)
+int processCommand(Dictionary **dictionary, APPLICATION_STATE* applicationState, DynamicArray* input)
 {
     if (strlen(input->value) == 0)
         {
@@ -32,7 +32,7 @@ int processCommand(Dictionary *dictionary, APPLICATION_STATE* applicationState, 
             return processSearch(dictionary, input);
 
         case 'p':
-            printDictionary(dictionary, "", 0);
+            printDictionary(*dictionary, "", 0);
             return 1;
 
         case 'g':
@@ -50,7 +50,7 @@ int processCommand(Dictionary *dictionary, APPLICATION_STATE* applicationState, 
         }
 }
 
-static int processInsert(Dictionary *dictionary, DynamicArray* input)
+static int processInsert(Dictionary **dictionary, DynamicArray* input)
 {
     char regexPattern[] = "^(i) ([a-zA-Z]+) (.+)$";
 
@@ -83,15 +83,15 @@ static int processInsert(Dictionary *dictionary, DynamicArray* input)
 
     regfree(&regexCompiled);
 
-    if (searchWordDictionary(dictionary, word))
-        insertDefinitionDictionary(dictionary, word, createDefinition(definition));
+    if (searchWordDictionary(*dictionary, word))
+        insertDefinitionDictionary(*dictionary, word, createDefinition(definition));
     else
-        insertWordDictionary(dictionary, word, createDefinitions(createDefinition(definition)));
+        insertWordDictionary(*dictionary, word, createDefinitions(createDefinition(definition)));
 
     return 1;
 }
 
-static int processInsertWithSpaces(Dictionary *dictionary, DynamicArray* input)
+static int processInsertWithSpaces(Dictionary **dictionary, DynamicArray* input)
 {
     char regexPattern[] = "^(i) \"([^\"]+)\" (.+)$";
 
@@ -125,15 +125,15 @@ static int processInsertWithSpaces(Dictionary *dictionary, DynamicArray* input)
 
     regfree(&regexCompiled);
 
-    if (searchWordDictionary(dictionary, word))
-        insertDefinitionDictionary(dictionary, word, createDefinition(definition));
+    if (searchWordDictionary(*dictionary, word))
+        insertDefinitionDictionary(*dictionary, word, createDefinition(definition));
     else
-        insertWordDictionary(dictionary, word, createDefinitions(createDefinition(definition)));
+        insertWordDictionary(*dictionary, word, createDefinitions(createDefinition(definition)));
 
     return 1;
 }
 
-static int processRemove(Dictionary *dictionary, DynamicArray* input)
+static int processRemove(Dictionary **dictionary, DynamicArray* input)
 {
     char regexPattern[] = "^(r) ([a-zA-Z]+)$";
 
@@ -161,12 +161,12 @@ static int processRemove(Dictionary *dictionary, DynamicArray* input)
 
     regfree(&regexCompiled);
 
-    dictionary = removeWordDictionary(dictionary, word);
+    *dictionary = removeWordDictionary(*dictionary, word);
 
     return 1;
 }
 
-static int processRemoveWithSpaces(Dictionary *dictionary, DynamicArray* input)
+static int processRemoveWithSpaces(Dictionary **dictionary, DynamicArray* input)
 {
     char regexPattern[] = "^(r) \"([^\"]+)\"$";
 
@@ -194,12 +194,12 @@ static int processRemoveWithSpaces(Dictionary *dictionary, DynamicArray* input)
 
     regfree(&regexCompiled);
 
-    dictionary = removeWordDictionary(dictionary, word);
+    *dictionary = removeWordDictionary(*dictionary, word);
 
     return 1;
 }
 
-static int processRemoveDefinition(Dictionary *dictionary, DynamicArray* input)
+static int processRemoveDefinition(Dictionary **dictionary, DynamicArray* input)
 {
     char regexPattern[] = "^(r) ([a-zA-Z]+) ([0-9]+)$";
 
@@ -232,12 +232,12 @@ static int processRemoveDefinition(Dictionary *dictionary, DynamicArray* input)
     
     regfree(&regexCompiled);
 
-    dictionary = removeDefinitionDictionary(dictionary, word, atoi(definitionIndex) - 1);
+    *dictionary = removeDefinitionDictionary(*dictionary, word, atoi(definitionIndex) - 1);
 
     return 1;
 }
 
-static int processRemoveDefinitionWithSpaces(Dictionary *dictionary, DynamicArray* input)
+static int processRemoveDefinitionWithSpaces(Dictionary **dictionary, DynamicArray* input)
 {
     char regexPattern[] = "^(r) \"([^\"]+)\" ([0-9]+)$";
 
@@ -271,12 +271,12 @@ static int processRemoveDefinitionWithSpaces(Dictionary *dictionary, DynamicArra
     
     regfree(&regexCompiled);
 
-    dictionary = removeDefinitionDictionary(dictionary, word, atoi(definitionIndex) - 1);
+    *dictionary = removeDefinitionDictionary(*dictionary, word, atoi(definitionIndex) - 1);
 
     return 1;
 }
 
-static int processSearch(Dictionary *dictionary, DynamicArray* input)
+static int processSearch(Dictionary **dictionary, DynamicArray* input)
 {
     char regexPattern[] = "^(s) ([a-zA-Z]+)$";
 
@@ -304,7 +304,7 @@ static int processSearch(Dictionary *dictionary, DynamicArray* input)
 
     regfree(&regexCompiled);
 
-    Definitions *definitions = searchWordDictionary(dictionary, word);
+    Definitions *definitions = searchWordDictionary(*dictionary, word);
     if (definitions)
     {
         int counter = 1;
@@ -321,7 +321,7 @@ static int processSearch(Dictionary *dictionary, DynamicArray* input)
     return 1;
 }
 
-static int processSearchWithSpaces(Dictionary *dictionary, DynamicArray* input)
+static int processSearchWithSpaces(Dictionary **dictionary, DynamicArray* input)
 {
     char regexPattern[] = "^(s) \"([^\"]+)\"$";
 
@@ -349,7 +349,7 @@ static int processSearchWithSpaces(Dictionary *dictionary, DynamicArray* input)
 
     regfree(&regexCompiled);
 
-    Definitions *definitions = searchWordDictionary(dictionary, word);
+    Definitions *definitions = searchWordDictionary(*dictionary, word);
     if (definitions)
     {
         int counter = 1;
@@ -366,7 +366,7 @@ static int processSearchWithSpaces(Dictionary *dictionary, DynamicArray* input)
     return 1;
 }
 
-static int processSearchDefinition(Dictionary *dictionary, DynamicArray* input)
+static int processSearchDefinition(Dictionary **dictionary, DynamicArray* input)
 {
     char regexPattern[] = "^(s) ([a-zA-Z]+) ([0-9]+)$";
 
@@ -399,7 +399,7 @@ static int processSearchDefinition(Dictionary *dictionary, DynamicArray* input)
     
     regfree(&regexCompiled);
 
-    Definition* definition = searchDefinitionDictionary(dictionary, word, atoi(definitionIndex) - 1);
+    Definition* definition = searchDefinitionDictionary(*dictionary, word, atoi(definitionIndex) - 1);
     if (definition)
         printf("%s\n", definition->value);
     else
@@ -408,7 +408,7 @@ static int processSearchDefinition(Dictionary *dictionary, DynamicArray* input)
     return 1;
 }
 
-static int processSearchDefinitionWithSpace(Dictionary *dictionary, DynamicArray* input)
+static int processSearchDefinitionWithSpace(Dictionary **dictionary, DynamicArray* input)
 {
     char regexPattern[] = "^(s) \"([^\"]+)\" ([0-9]+)$";
 
@@ -442,7 +442,7 @@ static int processSearchDefinitionWithSpace(Dictionary *dictionary, DynamicArray
     
     regfree(&regexCompiled);
 
-    Definition* definition = searchDefinitionDictionary(dictionary, word, atoi(definitionIndex) - 1);
+    Definition* definition = searchDefinitionDictionary(*dictionary, word, atoi(definitionIndex) - 1);
     if (definition)
         printf("%s\n", definition->value);
     else

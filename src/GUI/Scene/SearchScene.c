@@ -55,7 +55,7 @@ SearchScene *createSearchScene()
 
 static void searchButtonInputHandler(SceneManager *sceneManager, Scene *scene, SceneElement *sceneElement, int input)
 {
-    Dictionary *dictionary = sceneManager->userData;
+    Dictionary **dictionary = sceneManager->userData;
     
     TextInput *wordTextInput = scene->sceneElements[1];
     SceneElementUserData *wordTextInputSceneElementUserData = wordTextInput->userData;
@@ -76,11 +76,11 @@ static void searchButtonInputHandler(SceneManager *sceneManager, Scene *scene, S
     {
         if (strlen(definitionIndex) > 0)
         {
-            definition = searchDefinitionDictionary(dictionary, word, atoi(definitionIndex) - 1);
+            definition = searchDefinitionDictionary(*dictionary, word, atoi(definitionIndex) - 1);
         }
         else
         {
-            definitions = searchWordDictionary(dictionary, word);
+            definitions = searchWordDictionary(*dictionary, word);
         }
     }
 

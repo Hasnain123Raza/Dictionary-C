@@ -19,11 +19,11 @@ int main(int argc, char *argv[])
     {
         if (state.mode == MODE_CLI)
         {
-            handleInputCLI(dictionary, &state);
+            handleInputCLI(&dictionary, &state);
         }
         else if (state.mode == MODE_GUI)
         {
-            handleInputGUI(dictionary, &state);
+            handleInputGUI(&dictionary, &state);
         }
     }
 

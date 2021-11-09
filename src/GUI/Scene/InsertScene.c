@@ -55,7 +55,7 @@ InsertScene *createInsertScene()
 
 static void insertButtonInputHandler(SceneManager *sceneManager, Scene *scene, SceneElement *sceneElement, int input)
 {
-    Dictionary *dictionary = sceneManager->userData;
+    Dictionary **dictionary = sceneManager->userData;
 
     TextInput *wordTextInput = scene->sceneElements[1];
     SceneElementUserData *wordTextSceneElementUserData = wordTextInput->userData;
@@ -69,10 +69,10 @@ static void insertButtonInputHandler(SceneManager *sceneManager, Scene *scene, S
 
     if (strlen(word) != 0 && strlen(definition) != 0)
     {
-        if (searchWordDictionary(dictionary, word))
-            insertDefinitionDictionary(dictionary, word, createDefinition(definition));
+        if (searchWordDictionary(*dictionary, word))
+            insertDefinitionDictionary(*dictionary, word, createDefinition(definition));
         else
-            insertWordDictionary(dictionary, word, createDefinitions(createDefinition(definition)));
+            insertWordDictionary(*dictionary, word, createDefinitions(createDefinition(definition)));
     }
 
     clearTextBufferTextLabel(scene->sceneElements[3]);

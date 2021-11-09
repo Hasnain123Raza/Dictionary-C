@@ -13,7 +13,7 @@
 #include "SceneElementInterface.h"
 #include "SceneInterface.h"
 
-void handleInputGUI(Dictionary *dictionary, APPLICATION_STATE* applicationState);
+void handleInputGUI(Dictionary **dictionary, APPLICATION_STATE* applicationState);
 
 SceneManager *initializeSceneManager();
 void pauseGUI();
