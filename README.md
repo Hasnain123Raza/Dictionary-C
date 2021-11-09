@@ -12,6 +12,8 @@ Words and definitions are downloaded through web scraping. Curl library (https:/
 
 A few basic commands are supported (check out usage section to get started). These are implemented using some rudimentary regular expressions. There is some level of input sanitization but try not to make too many mistakes.
 
+GUI mode is implemented using the ncurses library (https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/). There are three fundamental abstractions: SceneManager, Scene, and SceneElement. A SceneManager manages a collection of scenes providing useful functionality such as switching and displaying active scene. A Scene manages a collection of scene elements with features like focus. A SceneElement represents the individual element that appears on the screen. Scene elements can be selectable, in which case they have a doubly linked list providing reference to the previous and the next selectable scene element allowing the scene to move focus around the menu.
+
 ## Usage
 
 The program accepts one command line argument. It is a integer argument specifying the amount of words to skip while webscrapping. For example, if the program is invoked with an argument of 50, only the every 50th word will have their definitions collected and be used in the program. If not argument is specified, the program assumes data is already available and attempts to read dictionary.txt file.
@@ -48,12 +50,20 @@ This command is used to search a word or one of its definitions. If only a word 
 
 This command is used to print the entire dictionary in a similar format as the tree command.
 
+### Graphical Mode
+
+> g
+
+This command is used to switch to the graphical mode. The graphical mode allows the user to switch back into command line mode if necessary.
+
 ### Quit
 
 > q
 
 This command is used to quit the program.
 
-To use this program, simply clone this repository, navigate to its root, and run make command.
+## Installation
+
+This program depends on several third party libraries that need to be installed beforehand. These includes curl, tidy, and ncurses. To install curl, use the command `sudo apt-get install libcurl4-gnutls-dev`. To install tidy, use the command `sudo apt-get install libtidy-dev`. To install ncurses, use the command `sudo apt-get install libncurses5-dev libncursesw5-dev`. After that simply clone this repository, navigate to its root, and run make command.
 
 This will generate a bin folder containing the driver executable.
