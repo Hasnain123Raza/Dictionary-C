@@ -1,6 +1,7 @@
 #ifndef TEXT_INPUT_H
 #define TEXT_INPUT_H
 
+#include <ctype.h>
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>

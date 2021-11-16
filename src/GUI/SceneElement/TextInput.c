@@ -92,7 +92,7 @@ static void inputHandler(SceneManager *sceneManager, Scene *scene, SceneElement 
 
         default:
         {
-            if (inputLength < SCENE_ELEMENT_INPUT_TEXT_LENGTH + 1)
+            if (isalnum(input) && inputLength < SCENE_ELEMENT_INPUT_TEXT_LENGTH + 1)
             {
                 textInputUserData->input[inputLength] = input;
                 textInputUserData->input[inputLength + 1] = '\0';
