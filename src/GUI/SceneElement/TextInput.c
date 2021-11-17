@@ -3,7 +3,7 @@
 static void drawHandler(SceneElement *sceneElement, int focused);
 static void inputHandler(SceneManager *sceneManager, Scene *scene, SceneElement *sceneElement, int input);
 
-TextInput *createTextInput(char *placeholder)
+TextInput *createTextInput(char *placeholder, TextInputChangedCallback textInputChangedCallback)
 {
     SceneElementUserData *sceneElementUserData = malloc(sizeof(SceneElementUserData));
     if (!sceneElementUserData)
@@ -22,6 +22,7 @@ TextInput *createTextInput(char *placeholder)
     }
     strncpy(textInputUserData->placeholder, placeholder, SCENE_ELEMENT_TEXT_LENGTH);
     textInputUserData->input[0] = '\0';
+    textInputUserData->textInputChangedCallback = textInputChangedCallback;
     sceneElementUserData->data = textInputUserData;
 
     int height = SCENE_ELEMENT_HEIGHT;
@@ -92,7 +93,7 @@ static void inputHandler(SceneManager *sceneManager, Scene *scene, SceneElement 
 
         default:
         {
-            if (isalnum(input) && inputLength < SCENE_ELEMENT_INPUT_TEXT_LENGTH + 1)
+            if ((isalnum(input) || input == ' ') && inputLength < SCENE_ELEMENT_INPUT_TEXT_LENGTH + 1)
             {
                 textInputUserData->input[inputLength] = input;
                 textInputUserData->input[inputLength + 1] = '\0';
@@ -100,6 +101,9 @@ static void inputHandler(SceneManager *sceneManager, Scene *scene, SceneElement 
             break;
         }
     }
+
+    if (textInputUserData->textInputChangedCallback)
+        textInputUserData->textInputChangedCallback(sceneManager, scene, sceneElement);
 
     clearSceneElement(sceneElement);
     drawSceneElement(sceneElement, 1);

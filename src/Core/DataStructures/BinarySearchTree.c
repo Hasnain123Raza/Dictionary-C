@@ -190,6 +190,46 @@ Definition *searchDefinitionDictionary(Dictionary *dictionary, char *word, unsig
     return getDefinitionDefinitions(node->definitions, definitionIndex, 0);
 }
 
+static Dictionary *matchNode(Dictionary *dictionary, char *prefix)
+{
+    if (dictionary == NULL)
+        return NULL;
+
+    int comparisonResult = strncmp(prefix, dictionary->word, strlen(prefix));
+    if (comparisonResult < 0)
+        return matchNode(dictionary->left, prefix);
+    else if (comparisonResult > 0)
+        return matchNode(dictionary->right, prefix);
+    else
+        return dictionary;
+}
+
+static void grabWords(Dictionary *dictionary, char *prefix, char *words[], unsigned int maxWords, unsigned int *count)
+{
+    if (dictionary == NULL)
+        return;
+
+    if (*count >= maxWords)
+        return;
+
+    Dictionary *node = matchNode(dictionary, prefix);
+    if (!node)
+        return;
+
+    words[*count] = node->word;
+    (*count)++;
+
+    grabWords(node->left, prefix, words, maxWords, count);
+    grabWords(node->right, prefix, words, maxWords, count);
+}
+
+unsigned int getMatchesDictionary(Dictionary *dictionary, char *prefix, char *words[], unsigned int maxWords)
+{
+    unsigned int count = 0;
+    grabWords(dictionary, prefix, words, maxWords, &count);
+    return count;
+}
+
 
 
 void printDictionary(Dictionary *dictionary, char *prefix, int isLeft)

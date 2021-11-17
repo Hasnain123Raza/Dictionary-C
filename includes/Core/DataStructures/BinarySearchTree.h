@@ -35,6 +35,7 @@ Dictionary *removeWordDictionary(Dictionary *dictionary, char *word);
 Dictionary *removeDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int definitionIndex);
 Definitions *searchWordDictionary(Dictionary *dictionary, char *word);
 Definition *searchDefinitionDictionary(Dictionary *dictionary, char *word, unsigned int definitionIndex);
+unsigned int getMatchesDictionary(Dictionary *dictionary, char *prefix, char *words[], unsigned int maxWords);
 
 void printDictionary(Dictionary *dictionary, char *prefix, int isLeft);
 
