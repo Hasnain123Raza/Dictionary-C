@@ -1,8 +1,31 @@
-all: main
+CC := gcc
+CFLAGS :=
+LDFLAGS :=
 
-main:
+project := bin/Dictionary
+source_files := $(shell find src -name "*.c")
+object_files := $(patsubst %.c, %.o, $(source_files))
+include_dirs := $(shell find include -type d)
+libraries := curl tidy ncurses
+
+CFLAGS += -g
+LDFLAGS += $(patsubst %, -I%, $(include_dirs)) $(patsubst %, -l%, $(libraries))
+
+.PHONY: all
+all: build $(object_files) bin $(project)
+
+build:
+	mkdir -p build
+
+$(object_files): %.o : %.c
+	$(CC) $(CFLAGS) $(LDFLAGS) -c $< -o build/$(@F)
+
+bin:
 	mkdir -p bin
-	gcc -g -o bin/main -Iincludes -Iincludes/CLI -Iincludes/Core -Iincludes/GUI -Iincludes/Core/DataStructures -Iincludes/Core/Utilities -Iincludes/GUI/Core -Iincludes/GUI/SceneElement -Iincludes/GUI/Scene -Iincludes/GUI/SceneManager `find src -name "*.c"` -lcurl -ltidy -lncurses
 
+$(project): $(patsubst %, build/%, $(notdir $(object_files)))
+	$(CC) $(patsubst %, build/%, $(notdir $(object_files))) $(LDFLAGS) -o $(project)
+
+.PHONY: clean
 clean:
-	rm -rf bin
+	rm -rf build bin
