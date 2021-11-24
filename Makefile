@@ -5,6 +5,7 @@ LDFLAGS :=
 project := bin/Dictionary
 source_files := $(shell find src -name "*.c")
 object_files := $(patsubst src%.c, build%.o, $(source_files))
+dependency_files := $(patsubst src%.c, build%.d, $(source_files))
 include_dirs := $(shell find include -type d)
 libraries := curl tidy ncurses
 
@@ -30,3 +31,12 @@ $(project): $(object_files)
 .PHONY: clean
 clean:
 	rm -rf build bin
+
+ifneq ($(MAKECMDGOALS), clean)
+include $(dependency_files)
+endif
+
+$(dependency_files): build%.d : src%.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) $(LDFLAGS) -MM $< | sed 's,\($(notdir $*)\.o\) *:,$(dir $@)\1 $@: ,' > $@.tmp
+	mv $@.tmp $@
